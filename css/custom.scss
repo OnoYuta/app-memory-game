@@ -53,3 +53,31 @@
   top: 50%;
   transform: translateY(-50%);
 }
+
+.suit-heart {
+  background-image:url(../svg/heart.svg);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 80%;
+}
+
+.suit-club {
+  background-image:url(../svg/club.svg);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 80%;
+}
+
+.suit-diam {
+  background-image:url(../svg/diam.svg);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 80%;
+}
+
+.suit-spade {
+  background-image:url(../svg/spade.svg);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 80%;
+}
