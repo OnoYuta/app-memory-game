@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /*!
  * Bootstrap v4.2.1 (https://getbootstrap.com/)
  * Copyright 2011-2018 The Bootstrap Authors
@@ -6923,7 +6924,8 @@ a.text-dark:hover, a.text-dark:focus {
 
 .card-wrapper {
   position: relative;
-  width: 100%; }
+  width: 100%;
+  perspective: 100px; }
 
 .card-wrapper:before {
   content: "";
@@ -6931,9 +6933,40 @@ a.text-dark:hover, a.text-dark:focus {
   padding-top: 150%; }
 
 .my-card {
-  background: #007bff;
   position: absolute;
   top: 0;
   left: 0;
   bottom: 0;
-  right: 0; }
+  right: 0;
+  cursor: pointer;
+  transition: 0.8s;
+  transform-style: preserve-3d; }
+
+.card-front,
+.card-back {
+  width: 100%;
+  height: 100%;
+  border-radius: 8%;
+  position: absolute;
+  /* 絶対配置を指定 */
+  top: 0;
+  left: 0;
+  backface-visibility: hidden;
+  /* 回転中裏面を見せない */
+  box-shadow: 0 5px 0 rgba(0, 0, 0, 0.2); }
+
+.card-back {
+  background: #17a2b8;
+  color: #fff; }
+
+.card-front {
+  background: #fff;
+  color: #fff;
+  transform: rotateY(180deg); }
+
+.card-text {
+  width: 100%;
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%); }
