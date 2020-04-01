@@ -1,1 +1,19 @@
 @import "../scss/bootstrap";
+
+.card-wrapper {
+    position: relative;
+    width: 100%;
+  }
+  .card-wrapper:before {
+    content:"";
+    display: block;
+    padding-top: 150%;
+  }
+  .my-card {
+    background: #007bff;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+  }
