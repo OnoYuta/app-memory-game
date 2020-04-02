@@ -23,11 +23,9 @@
     }
 
     function createCard(num, suit) {
-        let frontText = $("<div></div>").addClass("card-text").html(num);
-        let front = $("<div></div>").addClass("card-front suit-" + suit).append(frontText);
-        let backText = $("<div></div>").addClass("card-text").html("CARD");
-        let back = $("<div></div>").addClass("card-back").html(backText);
-        let card = $("<div></div>").addClass("card-body close").append(front, back);
+        let front = $("<div></div>").addClass("card-front suit-" + suit).append(num);
+        let back = $("<div></div>").addClass("card-back").html('CARD');
+        let card = $("<div></div>").addClass("my-card card-close").append(front, back);
         card.click(function () {
             flipCard(board, card);
         });
@@ -41,8 +39,8 @@
         if (board['firstCard'] && board['secondCard']) return;
         if (card.hasClass('open')) return;
 
-        card.removeClass('close');
-        card.addClass('open');
+        card.toggleClass('card-close');
+        card.toggleClass('card-open');
     }
 
     init();
