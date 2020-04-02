@@ -25,7 +25,7 @@
     function createCard(num, suit) {
         let front = $("<div></div>").addClass("card-front suit-" + suit).append(num);
         let back = $("<div></div>").addClass("card-back").html('CARD');
-        let card = $("<div></div>").addClass("my-card card-close").append(front, back);
+        let card = $("<div></div>").addClass("card-body card-close").append(front, back);
         card.click(function () {
             flipCard(board, card);
         });
