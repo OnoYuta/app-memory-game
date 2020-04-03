@@ -129,18 +129,43 @@
      */
     function tryGetCards(board) {
         if (board.firstCard.num !== board.secondCard.num) {
-            flipCard(board.firstCard);
-            flipCard(board.secondCard);
+            resetCards(board);
             board.isYourTurn = !board.isYourTurn;
         } else {
-            board.firstCard.body.off();
-            board.secondCard.body.off();
-
-            let player = board.isYourTurn ? board.players['you'] : board.players['rival'];
-            player.cards.push(board.firstCard, board.secondCard);
+            getCards(board);
         }
+    }
+
+    /**
+     * カードのフリップ動作を無効にしてプレイヤに渡す
+     * @param Board board 
+     */
+    function getCards(board) {
+        board.firstCard.body.off();
+        board.secondCard.body.off();
+
+        let player = board.isYourTurn ? board.players['you'] : board.players['rival'];
+        player.cards.push(board.firstCard, board.secondCard);
+
         board.firstCard = null;
         board.secondCard = null;
+    }
+
+    /**
+     * カードを裏返して次のカードを選べるようにする
+     * @param Board board 
+     */
+    function resetCards(board) {
+        board.secondCard.body.on('transitionend webkitTransitionEnd', function () {
+            // フリップ動作を無限ループしないようにイベントを無効にする
+            board.secondCard.body.off('transitionend webkitTransitionEnd');
+
+            flipCard(board.firstCard);
+            flipCard(board.secondCard);
+
+            board.firstCard = null;
+            board.secondCard = null;
+        });
     }
 
     init();
