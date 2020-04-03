@@ -66,8 +66,8 @@
 
     function tryGetCards(board) {
         if (board.firstCard.num === board.secondCard.num) {
-            board.firstCard.element.off();
-            board.secondCard.element.off();
+            board.firstCard.body.off();
+            board.secondCard.body.off();
             board.got.push(board.firstCard, board.secondCard);
         }
         board.firstCard = null;
