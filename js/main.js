@@ -1,46 +1,77 @@
 'use strict';
 
 {
-    let board = {
-        'firstCard': null,
-        'secondCard': null,
+    class Board {
+        constructor(maxCardNum, suits, element) {
+            this.firstCard = null;
+            this.secondCard = null;
+            this.maxCardNum = maxCardNum;
+            this.suits = suits;
+            this.element = element;
+            this.got = [];
+        }
+    }
+
+    class Card {
+        constructor(num, suit, board) {
+            this.num = num;
+            this.suit = suit;
+            this.element = createCardElement(this, board);
+            this.body = this.element.find('.card-body');
+        }
     }
 
     function init() {
-        let num = 6;
-        let suits = [
-            'club',
-            'diam',
-            'heart',
-            'spade'
-        ];
+        let board = new Board(6, ['club', 'diam', 'heart', 'spade'], $("#board"));
 
-        for (let i = 1; i <= num; i++) {
-            suits.forEach(suit => {
-                $("#board").append(createCard(i, suit));
+        for (let i = 1; i <= board.maxCardNum; i++) {
+            board.suits.forEach(suit => {
+                let card = new Card(i, suit, board);
+                board.element.append(card.element);
             });
         }
     }
 
-    function createCard(num, suit) {
-        let front = $("<div></div>").addClass("card-front suit-" + suit).append(num);
+    function createCardElement(card, board) {
+        let front = $("<div></div>").addClass("card-front suit-" + card.suit).append(card.num);
         let back = $("<div></div>").addClass("card-back").html('CARD');
-        let card = $("<div></div>").addClass("my-card card-close").append(front, back);
-        card.click(function () {
-            flipCard(board, card);
+        let body = $("<div></div>").addClass("card-body card-close").append(front, back);
+        body.click([card, board], function () {
+            openCard(card, board);
         });
-        let wrapper = $("<div></div>").addClass("card-wrapper").append(card);
-        let result = $("<div></div>").addClass("col-3 col-md-2 py-3").append(wrapper);
+        let wrapper = $("<div></div>").addClass("card-wrapper").append(body);
+        let element = $("<div></div>").addClass("col-3 col-md-2 py-3").append(wrapper);
 
-        return result;
+        return element;
     }
 
-    function flipCard(board, card) {
-        if (board['firstCard'] && board['secondCard']) return;
-        if (card.hasClass('open')) return;
+    function flipCard(card) {
+        card.body.toggleClass('card-open');
+    }
 
-        card.toggleClass('card-close');
-        card.toggleClass('card-open');
+    function openCard(card, board) {
+        if (card.body.hasClass('card-open')) return;
+
+        if (board.firstCard && board.secondCard) return;
+
+        if (board.firstCard === null) {
+            board.firstCard = card;
+        } else {
+            board.secondCard = card;
+            tryGetCards(board);
+        }
+
+        flipCard(card);
+    }
+
+    function tryGetCards(board) {
+        if (board.firstCard.num === board.secondCard.num) {
+            board.firstCard.body.off();
+            board.secondCard.body.off();
+            board.got.push(board.firstCard, board.secondCard);
+        }
+        board.firstCard = null;
+        board.secondCard = null;
     }
 
     init();
