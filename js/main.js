@@ -1,6 +1,18 @@
 'use strict';
 
 {
+    // ゲームの設定
+    const limitCardNum = 6;
+    const suitVariation = ['club', 'diam', 'heart', 'spade'];
+
+    // HTML要素
+    const stage = $("#stage");
+    const youProgressBar = $('#you-progress-bar');
+    const rivalProgressBar = $('#rival-progress-bar');
+    const numYouCards = $('#num-you-cards');
+    const numRivalCards = $('#num-rival-cards');
+    const rivalStrengthLevel = $('#rival-strength-level');
+
     /**
      * ゲームの進行を管理する
      */
@@ -11,17 +23,48 @@
          * @param array suitVariation 
          * @param Object element 
          */
-        constructor(limitCardNum, suitVariation, element) {
-            this.players = [];
+        constructor() {
+            this._players = [];
             this.isYourTurn = true;
             this.firstCard = null;
             this.secondCard = null;
-            this.limitCardNum = limitCardNum;
-            this.suitVariation = suitVariation;
-            this.element = element;
+        }
+        get players() {
+            return this._players;
+        }
+        set players(playerNames) {
+            this._players['you'] = new Player(playerNames['you']);
+            this._players['rival'] = new Player(playerNames['rival']);
+        }
+        updateHtml() {
+            this.updateProgressBar(youProgressBar, 'you');
+            this.updateProgressBar(rivalProgressBar, 'rival');
+            this.updateNumCards(numYouCards, 'you');
+            this.updateNumCards(numRivalCards, 'rival');
+        }
+        getNumCards(playerName) {
+            let player = this._players[playerName];
+            return player.cards.length;
+        }
+        updateProgressBar(progressBar, playerName) {
+            let totalNumCards = limitCardNum * suitVariation.length;
+            let numPlayerCards = this.getNumCards(playerName);
+            let progress = Math.round((numPlayerCards / totalNumCards) * 100);
+            let label = playerName === 'you' ? 'あなた' : 'ライバル';
+            progressBar.html(label + ' ' + progress + '%').attr({
+                'style': 'width: ' + progress + '%',
+                'aria-valuenow': progress,
+            });
+            return;
+        }
+        updateNumCards(numCardsElement, playerName) {
+            let totalNumCards = limitCardNum * suitVariation.length;
+            let numPlayerCards = this.getNumCards(playerName);
+            numCardsElement.html(
+                numPlayerCards + '枚 <small class="text-muted">/' + totalNumCards + '</small>'
+            );
         }
     }
-
 
     /**
      * ゲームに使用するカード
@@ -60,21 +103,20 @@
      */
     function init() {
         // ボードを作成する
-        let board = new Board(6, ['club', 'diam', 'heart', 'spade'], $("#board"));
+        let board = new Board();
 
         // 参加プレイヤをボードにセットする
-        let you = new Player('you');
-        let rival = new Player('rival');
-        board.players[you.name] = you;
-        board.players[rival.name] = rival;
+        board.players = { 'you': 'you', 'rival': 'rival' };
 
         // 使用するカードをボードにセットする
-        for (let i = 1; i <= board.limitCardNum; i++) {
-            board.suitVariation.forEach(suit => {
+        for (let i = 1; i <= limitCardNum; i++) {
+            suitVariation.forEach(suit => {
                 let card = new Card(i, suit, board);
-                board.element.append(card.element);
+                stage.append(card.element);
             });
         }
+
+        board.updateHtml();
     }
 
     /**
@@ -134,6 +176,7 @@
         } else {
             getCards(board);
         }
+        board.updateHtml();
     }
 
     /**
@@ -169,4 +212,7 @@
     }
 
     init();
+
+    let cardtest = $('#cards-rival-got');
+    cardtest.html('9枚');
 }
