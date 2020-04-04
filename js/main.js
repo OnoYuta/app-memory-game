@@ -4,6 +4,8 @@
     // ゲームの設定
     const limitCardNum = 6;
     const suitVariation = ['club', 'diam', 'heart', 'spade'];
+    const playerNameLabelMap = { 'you': 'あなた', 'rival': 'ライバル' };
+    const selectableNum = 2;
 
     // HTML要素
     const stage = $("#stage");
@@ -18,51 +20,167 @@
      */
     class Board {
         /**
-         * コンストラクタ
-         * @param int limitCardNum 
-         * @param array suitVariation 
-         * @param Object element 
+         * @param Object stage 
          */
-        constructor() {
-            this._players = [];
-            this.isYourTurn = true;
-            this.firstCard = null;
-            this.secondCard = null;
+        constructor(stage) {
+            this.stage = stage;
+            this.players = [];
+            this.cards = [];
+            this.activePlayerIndex = null;
+            this.selectedCards = [];
         }
-        get players() {
-            return this._players;
+        get activePlayer() {
+            return this.players[this.activePlayerIndex];
         }
-        set players(playerNames) {
-            this._players['you'] = new Player(playerNames['you']);
-            this._players['rival'] = new Player(playerNames['rival']);
+        /**
+         * ゲームにプレイヤを参加させる
+         * @param string name 
+         * @param string label 
+         */
+        addPlayer(name, label) {
+            this.players.push(new Player(name, label));
         }
+        /**
+         * ゲームの進捗をHTMLに反映させる
+         */
         updateHtml() {
-            this.updateProgressBar(youProgressBar, 'you');
-            this.updateProgressBar(rivalProgressBar, 'rival');
-            this.updateNumCards(numYouCards, 'you');
-            this.updateNumCards(numRivalCards, 'rival');
+            for (let i = 0; i < this.players.length; i++) {
+                this.updateProgressBar(i, this.players[i]);
+                this.updateNumCards(i, this.players[i]);
+            }
         }
-        getNumCards(playerName) {
-            let player = this._players[playerName];
-            return player.cards.length;
-        }
-        updateProgressBar(progressBar, playerName) {
+        /**
+         * プログレスバーを更新する
+         * @param int index 
+         * @param Player player 
+         */
+        updateProgressBar(index, player) {
+            let progressBar = (index === 0) ? youProgressBar : rivalProgressBar;
             let totalNumCards = limitCardNum * suitVariation.length;
-            let numPlayerCards = this.getNumCards(playerName);
-            let progress = Math.round((numPlayerCards / totalNumCards) * 100);
-            let label = playerName === 'you' ? 'あなた' : 'ライバル';
-            progressBar.html(label + ' ' + progress + '%').attr({
+            let progress = Math.round((player.numCards / totalNumCards) * 100);
+            progressBar.html(player.label + ' ' + progress + '%').attr({
                 'style': 'width: ' + progress + '%',
                 'aria-valuenow': progress,
             });
             return;
         }
-        updateNumCards(numCardsElement, playerName) {
+        /**
+         * 獲得カード枚数を更新する
+         * @param int index 
+         * @param Player player 
+         */
+        updateNumCards(index, player) {
+            let numCardsElement = (index === 0) ? numYouCards : numRivalCards;
             let totalNumCards = limitCardNum * suitVariation.length;
-            let numPlayerCards = this.getNumCards(playerName);
             numCardsElement.html(
-                numPlayerCards + '枚 <small class="text-muted">/' + totalNumCards + '</small>'
+                player.numCards + '枚 <small class="text-muted">/' + totalNumCards + '</small>'
             );
+        }
+        /**
+         * ボードにカードをセットする
+         * @param Card card 
+         */
+        appendCard(card) {
+            let board = this;
+            card.body.click([card, board], function () {
+                board.selectCard(card);
+            });
+            this.cards.push(card);
+            this.stage.append(card.element);
+        }
+        /**
+         * カードを選択する
+         * @param Card card 
+         */
+        selectCard(card) {
+
+            // ここにactivePlayerがマニュアル操作でないときはreturnの処理を実装予定
+
+            if ($.inArray(card, this.selectedCards) >= 0) return;
+
+            if (this.selectedCards.length < selectableNum) {
+                card.body.addClass('card-open');
+                this.selectedCards.push(card);
+            }
+
+            if (this.selectedCards.length >= selectableNum) {
+                this.tryGetCards();
+                return;
+            }
+        }
+        /**
+         * 選んだ2枚の番号が一致すればカードを獲得する
+         * 番号が一致しなければ次のプレイヤに操作を移す
+         */
+        tryGetCards() {
+            console.log(this.activePlayerIndex);
+            if (this.isNumOfCardsMatched()) {
+                this.getCardsAsActivePlayer();
+            } else {
+                this.resetCards();
+                this.moveOnNextTurn();
+            }
+            this.updateHtml();
+        }
+        /**
+         * 選んだカードの番号が一致していればtrueを返す
+         */
+        isNumOfCardsMatched() {
+            let num;
+
+            for (let i = 0; i < this.selectedCards.length; i++) {
+                if (!num) {
+                    num = this.selectedCards[i].num;
+                    continue;
+                }
+                if (num !== this.selectedCards[i].num) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+        /**
+         * 選んだカードをアクティブなプレイヤのものにする
+         */
+        getCardsAsActivePlayer() {
+            while (this.selectedCards.length > 0) {
+                let card = this.selectedCards.shift().body.off();
+                this.activePlayer.cards.push(card);
+            }
+        }
+        /**
+         * 表にしたカードを裏に戻して
+         */
+        resetCards() {
+            let lastCard = this.selectedCards[this.selectedCards.length - 1];
+
+            // カードを表にしてから裏返すためにtransitionendイベントとして定義する
+            lastCard.body.on('transitionend webkitTransitionEnd', { body: lastCard.body, board: this }, function (e) {
+                // 1度だけ実行すればよいのでイベントを無効にする
+                e.data.body.off('transitionend webkitTransitionEnd');
+
+                while (e.data.board.selectedCards.length > 0) {
+                    let card = e.data.board.selectedCards.shift();
+                    card.body.removeClass('card-open');
+                }
+            });
+        }
+        /**
+         * 次のプレイヤのターンに進む
+         */
+        moveOnNextTurn() {
+            if (this.activePlayerIndex < this.players.length - 1) {
+                this.activePlayerIndex++;
+            } else {
+                this.activePlayerIndex = 0;
+            }
+        }
+        /**
+         * プレイヤをアクティブにしてゲームを開始する
+         */
+        start() {
+            this.activePlayerIndex = 0;
         }
     }
 
@@ -74,13 +192,28 @@
          * コンストラクタ
          * @param int num 
          * @param string suit 
-         * @param Board board 
          */
-        constructor(num, suit, board) {
+        constructor(num, suit) {
             this.num = num;
             this.suit = suit;
-            this.element = createCardElement(this, board);
-            this.body = this.element.find('.card-body');
+            this.element = this.createCardElement(num, suit);
+        }
+        get body() {
+            return this.element.find('.card-body');
+        }
+        /**
+         * 
+         * @param int num 
+         * @param string suit 
+         */
+        createCardElement(num, suit) {
+            let front = $("<div></div>").addClass("card-front suit-" + suit).append(num);
+            let back = $("<div></div>").addClass("card-back").html('CARD');
+            let body = $("<div></div>").addClass("card-body").append(front, back);
+            let wrapper = $("<div></div>").addClass("card-wrapper").append(body);
+            let element = $("<div></div>").addClass("col-3 col-md-2 py-3").append(wrapper);
+
+            return element;
         }
     }
 
@@ -89,12 +222,19 @@
      */
     class Player {
         /**
-         * 
          * @param string name 
+         * @param string label 
          */
-        constructor(name) {
+        constructor(name, label) {
             this.name = name;
+            this.label = label;
             this.cards = [];
+        }
+        /**
+         * 獲得したカード枚数を取得する
+         */
+        get numCards() {
+            return this.cards.length;
         }
     }
 
@@ -103,116 +243,25 @@
      */
     function init() {
         // ボードを作成する
-        let board = new Board();
+        let board = new Board(stage);
 
         // 参加プレイヤをボードにセットする
-        board.players = { 'you': 'you', 'rival': 'rival' };
+        $.each(playerNameLabelMap, function (name, label) {
+            board.addPlayer(name, label);
+        });
 
         // 使用するカードをボードにセットする
         for (let i = 1; i <= limitCardNum; i++) {
             suitVariation.forEach(suit => {
-                let card = new Card(i, suit, board);
-                stage.append(card.element);
+                let card = new Card(i, suit);
+                board.appendCard(card);
             });
         }
 
+        board.start();
+
         board.updateHtml();
-    }
-
-    /**
-     * カードのHTML要素を生成する
-     * @param Card card 
-     * @param Board board 
-     */
-    function createCardElement(card, board) {
-        let front = $("<div></div>").addClass("card-front suit-" + card.suit).append(card.num);
-        let back = $("<div></div>").addClass("card-back").html('CARD');
-        let body = $("<div></div>").addClass("card-body card-close").append(front, back);
-        body.click([card, board], function () {
-            openCard(card, board);
-        });
-        let wrapper = $("<div></div>").addClass("card-wrapper").append(body);
-        let element = $("<div></div>").addClass("col-3 col-md-2 py-3").append(wrapper);
-
-        return element;
-    }
-
-    /**
-     * 引数のカードの表裏を反転する
-     * @param Card card 
-     */
-    function flipCard(card) {
-        card.body.toggleClass('card-open');
-    }
-
-    /**
-     * 裏向きのカードを1枚めくる
-     * @param Card card 
-     * @param Board board 
-     */
-    function openCard(card, board) {
-        if (card.body.hasClass('card-open')) return;
-
-        if (board.firstCard && board.secondCard) return;
-
-        if (board.firstCard === null) {
-            board.firstCard = card;
-        } else {
-            board.secondCard = card;
-            tryGetCards(board);
-        }
-
-        flipCard(card);
-    }
-
-    /**
-     * プレイヤが選んだ2枚のカードが一致すればプレイヤがカードを獲得する
-     * @param Board board 
-     */
-    function tryGetCards(board) {
-        if (board.firstCard.num !== board.secondCard.num) {
-            resetCards(board);
-            board.isYourTurn = !board.isYourTurn;
-        } else {
-            getCards(board);
-        }
-        board.updateHtml();
-    }
-
-    /**
-     * カードのフリップ動作を無効にしてプレイヤに渡す
-     * @param Board board 
-     */
-    function getCards(board) {
-        board.firstCard.body.off();
-        board.secondCard.body.off();
-
-        let player = board.isYourTurn ? board.players['you'] : board.players['rival'];
-        player.cards.push(board.firstCard, board.secondCard);
-
-        board.firstCard = null;
-        board.secondCard = null;
-    }
-
-    /**
-     * カードを裏返して次のカードを選べるようにする
-     * @param Board board 
-     */
-    function resetCards(board) {
-        board.secondCard.body.on('transitionend webkitTransitionEnd', function () {
-            // フリップ動作を無限ループしないようにイベントを無効にする
-            board.secondCard.body.off('transitionend webkitTransitionEnd');
-
-            flipCard(board.firstCard);
-            flipCard(board.secondCard);
-
-            board.firstCard = null;
-            board.secondCard = null;
-        });
     }
 
     init();
-
-    let cardtest = $('#cards-rival-got');
-    cardtest.html('9枚');
 }
