@@ -44,7 +44,7 @@
             </div>
             <!-- game area -->
             <div class="col-md-8">
-                <div class="row" id="board">
+                <div class="row" id="stage">
                 </div>
             </div>
         </div>
@@ -53,10 +53,10 @@
             <h2>進捗</h2>
             <p>各プレイヤが獲得したカード枚数が全体に占める割合をグラフで表します</p>
             <div class="progress" style="height: 24px;">
-                <div class="progress-bar bg-info" role="progressbar" style="width: 15%" aria-valuenow="15"
-                    aria-valuemin="0" aria-valuemax="100">あなた 15%</div>
-                <div class="progress-bar bg-dark" role="progressbar" style="width: 30%" aria-valuenow="30"
-                    aria-valuemin="0" aria-valuemax="100">ライバル 30%</div>
+                <div id="you-progress-bar" class="progress-bar bg-info" role="progressbar" style="width: 15%"
+                    aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">あなた 15%</div>
+                <div id="rival-progress-bar" class="progress-bar bg-dark" role="progressbar" style="width: 30%"
+                    aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">ライバル 30%</div>
             </div>
         </div>
         <!-- setting-cards -->
@@ -69,7 +69,8 @@
                         <h4 class="my-0 font-weight-normal">あなた</h4>
                     </div>
                     <div class="card-body">
-                        <h1 class="card-title pricing-card-title">10枚 <small class="text-muted">/ 52枚</small></h1>
+                        <h1 id="num-you-cards" class="card-title pricing-card-title">10枚 <small class="text-muted">/
+                                52枚</small></h1>
                         <p>あなたが獲得した枚数</p>
                         <button type="button" class="btn btn-lg btn-block btn-outline-info">詳細</button>
                     </div>
@@ -79,7 +80,9 @@
                         <h4 class="my-0 font-weight-normal">強さ</h4>
                     </div>
                     <div class="card-body">
-                        <h1 class="card-title pricing-card-title">Lv.1 <small class="text-muted">/ Lv.3</small></h1>
+                        <h1 id="rival-strength-level" class="card-title pricing-card-title">Lv.1 <small
+                                class="text-muted">/
+                                Lv.3</small></h1>
                         <div class="dropdown">
                             <p>ライバルの強さ</p>
                             <button class="btn btn-lg btn-block btn-outline-info dropdown-toggle"
@@ -98,7 +101,8 @@
                         <h4 class="my-0 font-weight-normal">ライバル</h4>
                     </div>
                     <div class="card-body">
-                        <h1 class="card-title pricing-card-title">8枚 <small class="text-muted">/ 52枚</small></h1>
+                        <h1 id="num-rival-cards" class="card-title pricing-card-title">8枚 <small class="text-muted">/
+                                52枚</small></h1>
                         <p>ライバルが獲得した枚数</p>
                         <button type="button" class="btn btn-lg btn-block btn-outline-info">詳細</button>
                     </div>
