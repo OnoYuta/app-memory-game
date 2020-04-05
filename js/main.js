@@ -6,11 +6,11 @@
      */
     class Config {
         constructor() {
-            this.suitVariation = ['club', 'diam', 'heart', 'spade'];
+            this.selectableNum = 2;
             this.maxCardNum = 6;
             this.rivalStrengthLevel = 2;
+            this.suitVariation = ['club', 'diam', 'heart', 'spade'];
             this.playerNameLabelMap = { 'you': 'あなた', 'rival': 'ライバル' };
-            this.selectableNum = 2;
         }
         getRequest() {
             if (getParam('suit')) {
@@ -18,11 +18,11 @@
             }
 
             if (getParam('max-card-num')) {
-                this.updateMaxCardNum(getParam('max-card-num'));
+                this.updateMaxCardNum(Number(getParam('max-card-num')));
             }
 
             if (getParam('rival-strength-level')) {
-                this.updateRivalStrengthLevel(getParam('rival-strength-level'));
+                this.updateRivalStrengthLevel(Number(getParam('rival-strength-level')));
             }
         }
         updateSuit(suit) {
@@ -50,10 +50,10 @@
     class Display {
         constructor() {
             this.stage = $("#stage");
+            this.startBtn = $('#btn-start-memory');
+            this.rivalStrengthLevel = $('#rival-strength-level');
             this.progressBars = {};
             this.numOfCards = {};
-            this.rivalStrengthLevel = $('#rival-strength-level');
-            this.startBtn = $('#btn-start-memory');
         }
         setCards(cards) {
             for (let i = 0; i < cards.length; i++) {
@@ -84,6 +84,106 @@
                 board.start();
                 btn.addClass('disabled');
             });
+        }
+        activateSettings() {
+            this.activateInputSuit();
+            this.activateInputMaxCardNum();
+            this.activateInputRivalStrengthLevel();
+        }
+        activateInputMenu(menus, input, label) {
+            for (let i = 0; i < menus.length; i++) {
+                let menu = $(menus[i]['selector']);
+                let value = menus[i]['value'];
+                menu.click([input, label, menu, value], function () {
+                    input.removeAttr('disabled');
+                    input.attr('value', value);
+                    label.html(menu.html());
+                });
+            }
+        }
+        reflectParameterToMenu(menus, input, label, key) {
+
+            if (!getParam(key)) return false;
+
+            let menu = $.grep(menus, function (menu, index) {
+                let param = $.isNumeric(getParam(key)) ? Number(getParam(key)) : getParam(key);
+                return (menu.value === param);
+            }).shift();
+
+            if (!menu) return false;
+
+            let text = $(menu.selector).html();
+            input.removeAttr('disabled');
+            input.attr('value', menu.value);
+            label.html(text);
+
+            return true;
+        }
+        activateInputSuit() {
+            let input = $('#input-suit');
+            let label = $('#label-input-suit');
+
+            let menus = [
+                {
+                    'selector': '#dropdown-item-suit-limited',
+                    'value': 'limited'
+                },
+                {
+                    'selector': '#dropdown-item-suit-all',
+                    'value': 'all'
+                }
+            ];
+
+            this.reflectParameterToMenu(menus, input, label, 'suit');
+            this.activateInputMenu(menus, input, label);
+        }
+        activateInputMaxCardNum() {
+            let input = $('#input-max-card-num');
+            let label = $('#label-input-max-card-num');
+
+            let menus = [
+                {
+                    'selector': '#dropdown-item-max-card-num-3',
+                    'value': 3
+                },
+                {
+                    'selector': '#dropdown-item-max-card-num-6',
+                    'value': 6
+                },
+                {
+                    'selector': '#dropdown-item-max-card-num-9',
+                    'value': 9
+                }
+            ];
+
+            this.reflectParameterToMenu(menus, input, label, 'max-card-num');
+            this.activateInputMenu(menus, input, label);
+        }
+        activateInputRivalStrengthLevel() {
+            let input = $('#input-rival-strength-level');
+            let label = $('#label-input-rival-strength-level');
+
+            let menus = [
+                {
+                    'selector': '#dropdown-item-rival-strength-1',
+                    'value': 1
+                },
+                {
+                    'selector': '#dropdown-item-rival-strength-2',
+                    'value': 2
+                },
+                {
+                    'selector': '#dropdown-item-rival-strength-3',
+                    'value': 3
+                },
+                {
+                    'selector': '#dropdown-item-rival-strength-0',
+                    'value': 0
+                },
+            ];
+
+            this.reflectParameterToMenu(menus, input, label, 'rival-strength-level');
+            this.activateInputMenu(menus, input, label);
         }
         updateProgressBar(index, value) {
             this.progressBars[index].updateValue(value);
@@ -347,6 +447,7 @@
 
         let display = new Display();
         display.setPalyerNames(config.playerNameLabelMap);
+        display.activateSettings();
 
         let board = new Board(config, display);
         board.setPalyers(config.playerNameLabelMap);
