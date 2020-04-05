@@ -6990,6 +6990,9 @@ a.text-dark:hover, a.text-dark:focus {
   background-position: center center;
   background-size: 80%; }
 
+#btn-start-memory {
+  color: white; }
+
 @media screen and (max-width: 720px) {
   .container {
     min-width: 480px; }
