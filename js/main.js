@@ -7,27 +7,116 @@
     const playerNameLabelMap = { 'you': 'あなた', 'rival': 'ライバル' };
     const selectableNum = 2;
 
-    // HTML要素
-    const stage = $("#stage");
-    const youProgressBar = $('#you-progress-bar');
-    const rivalProgressBar = $('#rival-progress-bar');
-    const numYouCards = $('#num-you-cards');
-    const numRivalCards = $('#num-rival-cards');
-    const rivalStrengthLevel = $('#rival-strength-level');
+    /**
+     * ブラウザ表示画面
+     */
+    class Display {
+        constructor(playerNameLabelMap) {
+            this.stage = $("#stage");
+            this.progressBars = {
+                [playerNameLabelMap['you']]: new ProgressBar(playerNameLabelMap['you'], $('#you-progress-bar')),
+                [playerNameLabelMap['rival']]: new ProgressBar(playerNameLabelMap['rival'], $('#rival-progress-bar')),
+            };
+            this.numOfCards = {
+                [playerNameLabelMap['you']]: new NumOfCard(playerNameLabelMap['you'], $('#num-you-cards')),
+                [playerNameLabelMap['rival']]: new NumOfCard(playerNameLabelMap['rival'], $('#num-rival-cards')),
+            };
+            this.rivalStrengthLevel = $('#rival-strength-level');
+            this.startBtn = $('#btn-start-memory');
+        }
+        setCards(cards) {
+            for (let i = 0; i < cards.length; i++) {
+                this.stage.append(cards[i].element);
+            }
+
+            let display = this;
+
+            $.each(this.progressBars, function (index) {
+                display.progressBars[index].setMax(cards.length);
+            });
+
+            $.each(this.numOfCards, function (index) {
+                display.numOfCards[index].setMax(cards.length);
+            });
+        }
+        activateStartBtn(board) {
+            let btn = this.startBtn;
+            btn.click([board, btn], function () {
+                board.start();
+                btn.addClass('disabled');
+            });
+        }
+        updateProgressBar(index, value) {
+            this.progressBars[index].updateValue(value);
+        }
+        updateNumOfCard(index, value) {
+            this.numOfCards[index].updateValue(value);
+        }
+    }
+
+    /**
+     * ゲーム進捗をグラフ化するプログレスバー
+     */
+    class ProgressBar {
+        constructor(label, element) {
+            this.label = label;
+            this.value = 0;
+            this.max = 0;
+            this.element = element;
+        }
+        updateValue(value) {
+            this.value = value;
+            this.updateElement();
+        }
+        setMax(max) {
+            this.max = max;
+        }
+        updateElement() {
+            let progress = Math.round((this.value / this.max) * 100);
+            this.element.html(this.label + ' ' + progress + '%').attr({
+                'style': 'width: ' + progress + '%',
+                'aria-valuenow': progress,
+            });
+        }
+    }
+
+    /**
+     * プレイヤが獲得したカード枚数表示
+     */
+    class NumOfCard {
+        constructor(label, element) {
+            this.label = label;
+            this.value = 0;
+            this.max = 0;
+            this.element = element;
+        }
+        updateValue(value) {
+            this.value = value;
+            this.updateElement();
+        }
+        setMax(max) {
+            this.max = max;
+        }
+        updateElement() {
+            this.element.html(
+                this.value + '枚 <small class="text-muted">/' + this.max + '</small>'
+            );
+        }
+    }
 
     /**
      * ゲームの進行を管理する
      */
     class Board {
         /**
-         * @param Object stage 
+         * @param Object display 
          */
-        constructor(stage) {
-            this.stage = stage;
+        constructor(display) {
             this.players = [];
             this.cards = [];
             this.activePlayerIndex = null;
             this.selectedCards = [];
+            this.display = display;
         }
         get activePlayer() {
             return this.players[this.activePlayerIndex];
@@ -43,26 +132,9 @@
         /**
          * ゲームの進捗をHTMLに反映させる
          */
-        updateHtml() {
-            for (let i = 0; i < this.players.length; i++) {
-                this.updateProgressBar(i, this.players[i]);
-                this.updateNumCards(i, this.players[i]);
-            }
-        }
-        /**
-         * プログレスバーを更新する
-         * @param int index 
-         * @param Player player 
-         */
-        updateProgressBar(index, player) {
-            let progressBar = (index === 0) ? youProgressBar : rivalProgressBar;
-            let totalNumCards = maxCardNum * suitVariation.length;
-            let progress = Math.round((player.numCards / totalNumCards) * 100);
-            progressBar.html(player.label + ' ' + progress + '%').attr({
-                'style': 'width: ' + progress + '%',
-                'aria-valuenow': progress,
-            });
-            return;
+        updateDisplay() {
+            this.display.updateProgressBar(this.activePlayer.label, this.activePlayer.cards.length);
+            this.display.updateNumOfCard(this.activePlayer.label, this.activePlayer.cards.length);
         }
         /**
          * 獲得カード枚数を更新する
@@ -80,13 +152,12 @@
          * ボードにカードをセットする
          * @param Card card 
          */
-        appendCard(card) {
+        appendCard(card, display) {
             let board = this;
             card.body.click([card, board], function () {
                 board.selectCard(card);
             });
             this.cards.push(card);
-            this.stage.append(card.element);
         }
         /**
          * カードを選択する
@@ -94,7 +165,7 @@
          */
         selectCard(card) {
 
-            // ここにactivePlayerがマニュアル操作でないときはreturnの処理を実装予定
+            if (this.activePlayerIndex === null) return;
 
             if ($.inArray(card, this.selectedCards) >= 0) return;
 
@@ -120,7 +191,7 @@
                 this.resetCards();
                 this.moveOnNextTurn();
             }
-            this.updateHtml();
+            this.updateDisplay();
         }
         /**
          * 選んだカードの番号が一致していればtrueを返す
@@ -230,20 +301,16 @@
             this.label = label;
             this.cards = [];
         }
-        /**
-         * 獲得したカード枚数を取得する
-         */
-        get numCards() {
-            return this.cards.length;
-        }
     }
 
     /**
      * ゲーム開始に必要な準備をする
      */
     function init() {
+        let display = new Display(playerNameLabelMap);
+
         // ボードを作成する
-        let board = new Board(stage);
+        let board = new Board(display);
 
         // 参加プレイヤをボードにセットする
         $.each(playerNameLabelMap, function (name, label) {
@@ -254,13 +321,18 @@
         for (let i = 1; i <= maxCardNum; i++) {
             suitVariation.forEach(suit => {
                 let card = new Card(i, suit);
-                board.appendCard(card);
+                board.appendCard(card, display);
             });
         }
 
-        board.start();
+        display.setCards(board.cards);
 
-        board.updateHtml();
+        $.each(playerNameLabelMap, function () {
+            display.updateProgressBar(this, 0);
+            display.updateNumOfCard(this, 0);
+        });
+
+        display.activateStartBtn(board);
     }
 
     init();
