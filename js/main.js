@@ -2,7 +2,7 @@
 
 {
     // ゲームの設定
-    const limitCardNum = 5;
+    const limitCardNum = 6;
     const suitVariation = ['club', 'diam', 'heart', 'spade'];
     const playerNameLabelMap = { 'you': 'あなた', 'rival': 'ライバル' };
     const selectableNum = 2;

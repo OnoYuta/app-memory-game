@@ -46,7 +46,7 @@
                         <button type="submit" class="btn btn-info btn-lg btn-block">スタート</button>
                     </div>
                 </div>
-                <div class="pb-3">
+                <div class="pb-3 d-none d-lg-block">
                     <form>
                         <h2>セッティング</h2>
                         <p>ゲームの設定を変更することができます</p>
@@ -77,11 +77,9 @@
                                 <a href="#" class="dropdown-item">マニュアル</a>
                             </div>
                         </div>
-
                         <button type="button" class="btn btn-dark btn-lg btn-block">リセット</button>
                     </form>
                 </div>
-
             </div>
             <!-- game area -->
             <div class="col-lg-8 py-3">
@@ -149,6 +147,41 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="py-3 d-lg-none">
+            <form>
+                <h2>セッティング</h2>
+                <p>ゲームの設定を変更することができます</p>
+                <div class="form-group">
+                    <button class="btn btn-lg btn-block btn-outline-info dropdown-toggle"
+                        data-toggle="dropdown">マーク</button>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item">スペード・ハートのみ</a>
+                        <a href="#" class="dropdown-item">全種類</a>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-lg btn-block btn-outline-info dropdown-toggle"
+                        data-toggle="dropdown">カード枚数</button>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item">3 以下のカードのみ</a>
+                        <a href="#" class="dropdown-item">6 以下のカードのみ</a>
+                        <a href="#" class="dropdown-item">9 以下のカードのみ</a>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-lg btn-block btn-outline-info dropdown-toggle"
+                        data-toggle="dropdown">ライバルの強さ</button>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item">易しい</a>
+                        <a href="#" class="dropdown-item">標準</a>
+                        <a href="#" class="dropdown-item">難しい</a>
+                        <a href="#" class="dropdown-item">マニュアル</a>
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-dark btn-lg btn-block">リセット</button>
+            </form>
         </div>
     </div>
     <footer class="footer text-center bg-dark">
