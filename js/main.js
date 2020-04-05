@@ -1,11 +1,48 @@
 'use strict';
 
 {
-    // ゲームの設定
-    const maxCardNum = 6;
-    const suitVariation = ['club', 'diam', 'heart', 'spade'];
-    const playerNameLabelMap = { 'you': 'あなた', 'rival': 'ライバル' };
-    const selectableNum = 2;
+    /**
+     * 設定情報
+     */
+    class Config {
+        constructor() {
+            this.suitVariation = ['club', 'diam', 'heart', 'spade'];
+            this.maxCardNum = 6;
+            this.rivalStrengthLevel = 2;
+            this.playerNameLabelMap = { 'you': 'あなた', 'rival': 'ライバル' };
+            this.selectableNum = 2;
+        }
+        getRequest() {
+            if (getParam('suit')) {
+                this.updateSuit(getParam('suit'));
+            }
+
+            if (getParam('max-card-num')) {
+                this.updateMaxCardNum(getParam('max-card-num'));
+            }
+
+            if (getParam('rival-strength-level')) {
+                this.updateRivalStrengthLevel(getParam('rival-strength-level'));
+            }
+        }
+        updateSuit(suit) {
+            if (suit === 'limited') {
+                this.suitVariation = ['spade', 'heart'];
+                return;
+            }
+            this.suitVariation = ['spade', 'heart', 'club', 'diam'];
+        }
+        updateMaxCardNum(maxCardNum) {
+            if (maxCardNum === 3 || maxCardNum === 6 || maxCardNum === 9) {
+                this.maxCardNum = maxCardNum;
+            }
+        }
+        updateRivalStrengthLevel(rivalStrengthLevel) {
+            if ($.isNumeric(rivalStrengthLevel) && rivalStrengthLevel <= 3 && rivalStrengthLevel >= 0) {
+                this.rivalStrengthLevel = rivalStrengthLevel;
+            }
+        }
+    }
 
     /**
      * HTML要素
@@ -111,13 +148,16 @@
      */
     class Board {
         /**
-         * @param Object display 
+         * コンストラクタ
+         * @param Config config 
+         * @param Display display 
          */
-        constructor(display) {
+        constructor(config, display) {
             this.players = [];
             this.cards = [];
             this.activePlayerIndex = null;
             this.selectedCards = [];
+            this.config = config
             this.display = display;
         }
         get activePlayer() {
@@ -137,18 +177,6 @@
         updateDisplay() {
             this.display.updateProgressBar(this.activePlayer.label, this.activePlayer.cards.length);
             this.display.updateNumOfCard(this.activePlayer.label, this.activePlayer.cards.length);
-        }
-        /**
-         * 獲得カード枚数を更新する
-         * @param int index 
-         * @param Player player 
-         */
-        updateNumCards(index, player) {
-            let numCardsElement = (index === 0) ? numYouCards : numRivalCards;
-            let totalNumCards = maxCardNum * suitVariation.length;
-            numCardsElement.html(
-                player.numCards + '枚 <small class="text-muted">/' + totalNumCards + '</small>'
-            );
         }
         /**
          * ボードにカードをセットする
@@ -175,14 +203,14 @@
 
             if (this.activePlayerIndex === null) return;
 
-            if ($.inArray(card, this.selectedCards) >= 0) return;
+            if ($.inArray(card, this.config.selectedCards) >= 0) return;
 
-            if (this.selectedCards.length < selectableNum) {
+            if (this.selectedCards.length < this.config.selectableNum) {
                 card.body.addClass('card-open');
                 this.selectedCards.push(card);
             }
 
-            if (this.selectedCards.length >= selectableNum) {
+            if (this.selectedCards.length >= this.config.selectableNum) {
                 this.tryGetCards();
                 return;
             }
@@ -314,15 +342,18 @@
      * ゲーム開始に必要な準備をする
      */
     function init() {
-        let display = new Display();
-        display.setPalyerNames(playerNameLabelMap);
+        let config = new Config();
+        config.getRequest();
 
-        let board = new Board(display);
-        board.setPalyers(playerNameLabelMap);
+        let display = new Display();
+        display.setPalyerNames(config.playerNameLabelMap);
+
+        let board = new Board(config, display);
+        board.setPalyers(config.playerNameLabelMap);
 
         // 使用するカードをボードにセットする
-        for (let i = 1; i <= maxCardNum; i++) {
-            suitVariation.forEach(suit => {
+        for (let i = 1; i <= config.maxCardNum; i++) {
+            config.suitVariation.forEach(suit => {
                 let card = new Card(i, suit);
                 board.appendCard(card, display);
             });
@@ -330,12 +361,27 @@
 
         display.setCards(board.cards);
 
-        $.each(playerNameLabelMap, function () {
+        $.each(config.playerNameLabelMap, function () {
             display.updateProgressBar(this, 0);
             display.updateNumOfCard(this, 0);
         });
 
         display.activateStartBtn(board);
+    }
+
+    /**
+     * キーを指定してクエリパラメータを取得する
+     * @param string name 
+     * @param string url 
+     */
+    function getParam(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
     }
 
     init();
