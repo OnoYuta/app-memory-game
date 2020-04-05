@@ -54,8 +54,8 @@
                             <button class="btn btn-lg btn-block btn-outline-info dropdown-toggle"
                                 data-toggle="dropdown">マーク</button>
                             <div class="dropdown-menu">
-                                <a href="#" class="dropdown-item">スペード・ハートのみ</a>
-                                <a href="#" class="dropdown-item">全種類</a>
+                                <div class="dropdown-item" id="dropdown-item-suit-limited">スペード・ハートのみ</div>
+                                <div class="dropdown-item" id="dropdown-item-suit-all">全種類</div>
                             </div>
                             <input type="hidden" name="suit[]" value="spade">
                             <input type="hidden" name="suit[]" value="heart">
@@ -64,9 +64,9 @@
                             <button class="btn btn-lg btn-block btn-outline-info dropdown-toggle"
                                 data-toggle="dropdown">カード枚数</button>
                             <div class="dropdown-menu">
-                                <a href="#" class="dropdown-item">3 以下のカードのみ</a>
-                                <a href="#" class="dropdown-item">6 以下のカードのみ</a>
-                                <a href="#" class="dropdown-item">9 以下のカードのみ</a>
+                                <div class="dropdown-item" id="dropdown-item-max-card-num-3">3 以下のカードのみ</div>
+                                <div class="dropdown-item" id="dropdown-item-max-card-num-6">6 以下のカードのみ</div>
+                                <div class="dropdown-item" id="dropdown-item-max-card-num-9">9 以下のカードのみ</div>
                             </div>
                             <input type="hidden" name="max-card-num" value="3">
                         </div>
@@ -74,14 +74,15 @@
                             <button class="btn btn-lg btn-block btn-outline-info dropdown-toggle"
                                 data-toggle="dropdown">ライバルの強さ</button>
                             <div class="dropdown-menu">
-                                <a href="#" class="dropdown-item">易しい</a>
-                                <a href="#" class="dropdown-item">標準</a>
-                                <a href="#" class="dropdown-item">難しい</a>
-                                <a href="#" class="dropdown-item">マニュアル</a>
+                                <div class="dropdown-item" id="dropdown-item-rival-strength-1">易しい</div>
+                                <div class="dropdown-item" id="dropdown-item-rival-strength-2">標準</div>
+                                <div class="dropdown-item" id="dropdown-item-rival-strength-3">難しい</div>
+                                <div class="dropdown-item" id="dropdown-item-rival-strength-0">マニュアル</div>
                             </div>
                             <input type="hidden" name="rival-strength-level" value="3">
                         </div>
-                        <button type="submit" class="btn btn-dark btn-lg btn-block">リセット</button>
+                        <button type="submit" class="btn btn-info btn-lg btn-block">適用</button>
+                        <a href="/memory_game.html" class="btn btn-dark btn-lg btn-block">リセット</a>
                     </form>
                 </div>
             </div>
@@ -148,31 +149,31 @@
                     <button class="btn btn-lg btn-block btn-outline-info dropdown-toggle"
                         data-toggle="dropdown">マーク</button>
                     <div class="dropdown-menu">
-                        <a href="#" class="dropdown-item">スペード・ハートのみ</a>
-                        <a href="#" class="dropdown-item">全種類</a>
+                        <div class="dropdown-item" id="dropdown-item-suit-limited">スペード・ハートのみ</div>
+                        <div class="dropdown-item" id="dropdown-item-suit-all">全種類</div>
                     </div>
                 </div>
                 <div class="form-group">
                     <button class="btn btn-lg btn-block btn-outline-info dropdown-toggle"
                         data-toggle="dropdown">カード枚数</button>
                     <div class="dropdown-menu">
-                        <a href="#" class="dropdown-item">3 以下のカードのみ</a>
-                        <a href="#" class="dropdown-item">6 以下のカードのみ</a>
-                        <a href="#" class="dropdown-item">9 以下のカードのみ</a>
+                        <div class="dropdown-item" id="dropdown-item-max-card-num-3">3 以下のカードのみ</div>
+                        <div class="dropdown-item" id="dropdown-item-max-card-num-6">6 以下のカードのみ</div>
+                        <div class="dropdown-item" id="dropdown-item-max-card-num-9">9 以下のカードのみ</div>
                     </div>
                 </div>
                 <div class="form-group">
                     <button class="btn btn-lg btn-block btn-outline-info dropdown-toggle"
                         data-toggle="dropdown">ライバルの強さ</button>
                     <div class="dropdown-menu">
-                        <a href="#" class="dropdown-item">易しい</a>
-                        <a href="#" class="dropdown-item">標準</a>
-                        <a href="#" class="dropdown-item">難しい</a>
-                        <a href="#" class="dropdown-item">マニュアル</a>
+                        <div class="dropdown-item" id="dropdown-item-rival-strength-1">易しい</div>
+                        <div class="dropdown-item" id="dropdown-item-rival-strength-2">標準</div>
+                        <div class="dropdown-item" id="dropdown-item-rival-strength-3">難しい</div>
+                        <div class="dropdown-item" id="dropdown-item-rival-strength-0">マニュアル</div>
                     </div>
                 </div>
-
-                <button type="button" class="btn btn-dark btn-lg btn-block">リセット</button>
+                <button type="submit" class="btn btn-info btn-lg btn-block">適用</button>
+                <a href="/memory_game.html" class="btn btn-dark btn-lg btn-block">リセット</a>
             </form>
         </div>
     </div>
