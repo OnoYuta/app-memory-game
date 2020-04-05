@@ -344,7 +344,6 @@
     function init() {
         let config = new Config();
         config.getRequest();
-        console.log(config);
 
         let display = new Display();
         display.setPalyerNames(config.playerNameLabelMap);
