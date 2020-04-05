@@ -2,7 +2,7 @@
 
 {
     // ゲームの設定
-    const limitCardNum = 6;
+    const limitCardNum = 5;
     const suitVariation = ['club', 'diam', 'heart', 'spade'];
     const playerNameLabelMap = { 'you': 'あなた', 'rival': 'ライバル' };
     const selectableNum = 2;
@@ -211,7 +211,7 @@
             let back = $("<div></div>").addClass("card-back").html('CARD');
             let body = $("<div></div>").addClass("card-body").append(front, back);
             let wrapper = $("<div></div>").addClass("card-wrapper").append(body);
-            let element = $("<div></div>").addClass("col-3 col-md-2 py-3").append(wrapper);
+            let element = $("<div></div>").addClass("col-3 col-md-2 py-1").append(wrapper);
 
             return element;
         }
