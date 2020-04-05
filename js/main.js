@@ -80,9 +80,19 @@
         }
         activateStartBtn(board) {
             let btn = this.startBtn;
+
+            // スタートボタンをクリックするとゲームが開始する
             btn.click([board, btn], function () {
                 board.start();
                 btn.addClass('disabled');
+                btn.off();
+            });
+
+            // カードが配置された領域をクリックした場合もゲームが開始する
+            this.stage.click([board, btn], function () {
+                board.start();
+                btn.addClass('disabled');
+                btn.off();
             });
         }
         activateSettings() {
