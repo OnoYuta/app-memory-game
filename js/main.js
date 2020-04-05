@@ -8,19 +8,13 @@
     const selectableNum = 2;
 
     /**
-     * ブラウザ表示画面
+     * HTML要素
      */
     class Display {
-        constructor(playerNameLabelMap) {
+        constructor() {
             this.stage = $("#stage");
-            this.progressBars = {
-                [playerNameLabelMap['you']]: new ProgressBar(playerNameLabelMap['you'], $('#you-progress-bar')),
-                [playerNameLabelMap['rival']]: new ProgressBar(playerNameLabelMap['rival'], $('#rival-progress-bar')),
-            };
-            this.numOfCards = {
-                [playerNameLabelMap['you']]: new NumOfCard(playerNameLabelMap['you'], $('#num-you-cards')),
-                [playerNameLabelMap['rival']]: new NumOfCard(playerNameLabelMap['rival'], $('#num-rival-cards')),
-            };
+            this.progressBars = {};
+            this.numOfCards = {};
             this.rivalStrengthLevel = $('#rival-strength-level');
             this.startBtn = $('#btn-start-memory');
         }
@@ -38,6 +32,14 @@
             $.each(this.numOfCards, function (index) {
                 display.numOfCards[index].setMax(cards.length);
             });
+        }
+        setPalyerNames(playerNameLabelMap) {
+            let playerNames = Object.keys(playerNameLabelMap);
+            for (let i = 0; i < playerNames.length; i++) {
+                let label = playerNameLabelMap[playerNames[i]];
+                this.progressBars[label] = new ProgressBar(label, $('#progress-bar' + (i + 1)));
+                this.numOfCards[label] = new NumOfCard(label, $('#num-of-cards' + (i + 1)));
+            }
         }
         activateStartBtn(board) {
             let btn = this.startBtn;
@@ -152,12 +154,18 @@
          * ボードにカードをセットする
          * @param Card card 
          */
-        appendCard(card, display) {
+        appendCard(card) {
             let board = this;
             card.body.click([card, board], function () {
                 board.selectCard(card);
             });
             this.cards.push(card);
+        }
+        setPalyers(playerNameLabelMap) {
+            let board = this;
+            $.each(playerNameLabelMap, function (name, label) {
+                board.addPlayer(name, label);
+            });
         }
         /**
          * カードを選択する
@@ -184,7 +192,6 @@
          * 番号が一致しなければ次のプレイヤに操作を移す
          */
         tryGetCards() {
-            console.log(this.activePlayerIndex);
             if (this.isNumOfCardsMatched()) {
                 this.getCardsAsActivePlayer();
             } else {
@@ -307,15 +314,11 @@
      * ゲーム開始に必要な準備をする
      */
     function init() {
-        let display = new Display(playerNameLabelMap);
+        let display = new Display();
+        display.setPalyerNames(playerNameLabelMap);
 
-        // ボードを作成する
         let board = new Board(display);
-
-        // 参加プレイヤをボードにセットする
-        $.each(playerNameLabelMap, function (name, label) {
-            board.addPlayer(name, label);
-        });
+        board.setPalyers(playerNameLabelMap);
 
         // 使用するカードをボードにセットする
         for (let i = 1; i <= maxCardNum; i++) {
