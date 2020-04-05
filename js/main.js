@@ -40,8 +40,10 @@
             });
         }
         activateStartBtn(board) {
-            this.startBtn.click(board, function () {
+            let btn = this.startBtn;
+            btn.click([board, btn], function () {
                 board.start();
+                btn.addClass('disabled');
             });
         }
         updateProgressBar(index, value) {
