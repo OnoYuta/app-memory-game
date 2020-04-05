@@ -42,12 +42,12 @@
                 <div class="py-3">
                     <h2>ゲーム開始</h2>
                     <p>ボタンを押してゲームを開始してください</p>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-info btn-lg btn-block">スタート</button>
-                    </div>
+                    <!-- <div class="form-group"> -->
+                    <div class="btn btn-info btn-lg btn-block" id="btn-start-memory">スタート</div>
+                    <!-- </div> -->
                 </div>
                 <div class="pb-3 d-none d-lg-block">
-                    <form>
+                    <form action="" method='get'>
                         <h2>セッティング</h2>
                         <p>ゲームの設定を変更することができます</p>
                         <div class="form-group">
@@ -57,6 +57,8 @@
                                 <a href="#" class="dropdown-item">スペード・ハートのみ</a>
                                 <a href="#" class="dropdown-item">全種類</a>
                             </div>
+                            <input type="hidden" name="suit[]" value="spade">
+                            <input type="hidden" name="suit[]" value="heart">
                         </div>
                         <div class="form-group">
                             <button class="btn btn-lg btn-block btn-outline-info dropdown-toggle"
@@ -66,6 +68,7 @@
                                 <a href="#" class="dropdown-item">6 以下のカードのみ</a>
                                 <a href="#" class="dropdown-item">9 以下のカードのみ</a>
                             </div>
+                            <input type="hidden" name="max-card-num" value="3">
                         </div>
                         <div class="form-group">
                             <button class="btn btn-lg btn-block btn-outline-info dropdown-toggle"
@@ -76,8 +79,9 @@
                                 <a href="#" class="dropdown-item">難しい</a>
                                 <a href="#" class="dropdown-item">マニュアル</a>
                             </div>
+                            <input type="hidden" name="rival-strength-level" value="3">
                         </div>
-                        <button type="button" class="btn btn-dark btn-lg btn-block">リセット</button>
+                        <button type="submit" class="btn btn-dark btn-lg btn-block">リセット</button>
                     </form>
                 </div>
             </div>
@@ -111,7 +115,6 @@
                         <h1 id="num-you-cards" class="card-title pricing-card-title">10枚 <small class="text-muted">/
                                 52枚</small></h1>
                         <p>あなたの獲得枚数</p>
-                        <button type="button" class="btn btn-lg btn-block btn-outline-info">詳細</button>
                     </div>
                 </div>
                 <div class="card mb-4 shadow-sm">
@@ -122,17 +125,7 @@
                         <h1 id="rival-strength-level" class="card-title pricing-card-title">Lv.1 <small
                                 class="text-muted">/
                                 Lv.3</small></h1>
-                        <div class="dropdown">
-                            <p>ライバルの強さ</p>
-                            <button class="btn btn-lg btn-block btn-outline-info dropdown-toggle"
-                                data-toggle="dropdown">難易度</button>
-                            <div class="dropdown-menu">
-                                <a href="#" class="dropdown-item">易しい</a>
-                                <a href="#" class="dropdown-item">標準</a>
-                                <a href="#" class="dropdown-item">難しい</a>
-                                <a href="#" class="dropdown-item">マニュアル</a>
-                            </div>
-                        </div>
+                        <p>ライバルの強さ</p>
                     </div>
                 </div>
                 <div class="card mb-4 shadow-sm">
@@ -143,7 +136,6 @@
                         <h1 id="num-rival-cards" class="card-title pricing-card-title">8枚 <small class="text-muted">/
                                 52枚</small></h1>
                         <p>ライバルの獲得枚数</p>
-                        <button type="button" class="btn btn-lg btn-block btn-outline-info">詳細</button>
                     </div>
                 </div>
             </div>

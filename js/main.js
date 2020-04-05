@@ -2,7 +2,7 @@
 
 {
     // ゲームの設定
-    const limitCardNum = 6;
+    const maxCardNum = 6;
     const suitVariation = ['club', 'diam', 'heart', 'spade'];
     const playerNameLabelMap = { 'you': 'あなた', 'rival': 'ライバル' };
     const selectableNum = 2;
@@ -56,7 +56,7 @@
          */
         updateProgressBar(index, player) {
             let progressBar = (index === 0) ? youProgressBar : rivalProgressBar;
-            let totalNumCards = limitCardNum * suitVariation.length;
+            let totalNumCards = maxCardNum * suitVariation.length;
             let progress = Math.round((player.numCards / totalNumCards) * 100);
             progressBar.html(player.label + ' ' + progress + '%').attr({
                 'style': 'width: ' + progress + '%',
@@ -71,7 +71,7 @@
          */
         updateNumCards(index, player) {
             let numCardsElement = (index === 0) ? numYouCards : numRivalCards;
-            let totalNumCards = limitCardNum * suitVariation.length;
+            let totalNumCards = maxCardNum * suitVariation.length;
             numCardsElement.html(
                 player.numCards + '枚 <small class="text-muted">/' + totalNumCards + '</small>'
             );
@@ -251,7 +251,7 @@
         });
 
         // 使用するカードをボードにセットする
-        for (let i = 1; i <= limitCardNum; i++) {
+        for (let i = 1; i <= maxCardNum; i++) {
             suitVariation.forEach(suit => {
                 let card = new Card(i, suit);
                 board.appendCard(card);
