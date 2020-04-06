@@ -14,6 +14,7 @@
 </head>
 
 <body>
+
     <!-- nav-bar -->
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
         <div class="container">
@@ -45,7 +46,7 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h3 class=“modal-title”>ゲームを開始しました</h3>
+                                    <h3 class=“modal-title”>ゲームが始まりました！</h3>
                                     <button class="close" data-dismiss="modal">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -56,22 +57,17 @@
                                         <li>カードをクリックしてめくってみてください</li>
                                         <li>2枚のカードをめくって表面の数字を比較します</li>
                                         <ul>
-                                            <li>2つの数字が一致すればカードを獲得できます</li>
+                                            <li>2つの数字が一致すればカードを獲得します</li>
                                             <li>数字が一致しなければ対戦相手のターンに移ります</li>
                                         </ul>
                                         <li>さきに全カードの50%を獲得したプレイヤの勝利です</li>
                                     </ol>
                                 </div>
-                                <div class="modal-footer">
-                                    <button class="btn btn-primary" data-dismiss="modal">確認</button>
-                                </div>
                             </div>
                         </div>
                     </div>
                     <p>ボタンを押してゲームを開始してください</p>
-                    <!-- <div class="form-group"> -->
                     <div class="btn btn-info btn-lg btn-block" id="btn-start-memory">スタート</div>
-                    <!-- </div> -->
                 </div>
                 <div class="pb-3 d-none d-lg-block">
                     <form action="" method='get'>
@@ -117,6 +113,20 @@
             </div>
             <!-- game area -->
             <div class="col-lg-8 py-3">
+                <div id="toast-turn" class="toast toast-turn" data-delay="4000" role="alert" aria-live="assertive"
+                    aria-atomic="true">
+                    <div class="toast-header bg-info text-white">
+                        <strong class="mr-auto"><span id='toast-turn-who'></span>のターンになりました</strong>
+                        <button type="button" class="ml-2 mb-1 close text-white" data-dismiss="toast"
+                            aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="toast-body bg-info text-white">
+                        現在の獲得枚数は<br />
+                        あなた: <span id='toast-turn-num1'></span>枚 ライバル: <span id='toast-turn-num2'></span>枚
+                    </div>
+                </div>
                 <div class="row" id="stage">
                 </div>
             </div>

@@ -404,6 +404,11 @@
             } else {
                 this.activePlayerIndex = 0;
             }
+            $('#toast-turn-who').text(this.players[this.activePlayerIndex].label);
+            for (let i = 0; i < this.players.length; i++) {
+                $('#toast-turn-num' + (i + 1)).text(this.players[i].cards.length);
+            }
+            $('#toast-turn').toast('show');
         }
         /**
          * プレイヤをアクティブにしてゲームを開始する

@@ -6993,6 +6993,12 @@ a.text-dark:hover, a.text-dark:focus {
 #btn-start-memory {
   color: white; }
 
+#toast-turn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1; }
+
 @media screen and (max-width: 720px) {
   .container {
     min-width: 480px; }
