@@ -6999,6 +6999,11 @@ a.text-dark:hover, a.text-dark:focus {
   right: 0;
   z-index: 1; }
 
+.toast-info {
+  background-color: #d1ecf1;
+  border-color: #bee5eb;
+  color: #0c5460; }
+
 @media screen and (max-width: 720px) {
   .container {
     min-width: 480px; }

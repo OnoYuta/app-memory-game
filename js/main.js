@@ -102,6 +102,10 @@
                 show: true
             });
 
+            $('#modal-start').click(function () {
+                $(this).modal('hide');
+            });
+
             this.stage.off();
             this.startBtn.off();
             this.startBtn.addClass('disabled');

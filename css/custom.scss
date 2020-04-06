@@ -76,8 +76,12 @@
   position: absolute;
   top: 0;
   right: 0;
-  z-index: 1;
-}
+  z-index: 1;}
+
+.toast-info {
+  background-color: #d1ecf1;
+  border-color: #bee5eb;
+  color: #0c5460;}
 
 @media screen and (max-width: 720px) {
   .container{
