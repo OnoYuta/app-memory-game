@@ -79,21 +79,31 @@
             }
         }
         activateStartBtn(board) {
-            let btn = this.startBtn;
+            let display = this;
 
             // スタートボタンをクリックするとゲームが開始する
-            btn.click([board, btn], function () {
-                board.start();
-                btn.addClass('disabled');
-                btn.off();
+            this.startBtn.click([board, display], function () {
+                display.callBoardStartAction(board);
             });
 
             // カードが配置された領域をクリックした場合もゲームが開始する
-            this.stage.click([board, btn], function () {
-                board.start();
-                btn.addClass('disabled');
-                btn.off();
+            this.stage.click([board, display], function () {
+                display.callBoardStartAction(board);
             });
+        }
+        callBoardStartAction(board) {
+            board.start();
+
+            // ゲーム開始のモーダルを表示する
+            $('#modal-start').modal({
+                backdrop: true,
+                keyboard: true,
+                show: true
+            });
+
+            this.stage.off();
+            this.startBtn.off();
+            this.startBtn.addClass('disabled');
         }
         activateSettings() {
             this.activateInputSuit();

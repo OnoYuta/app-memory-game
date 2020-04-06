@@ -41,6 +41,33 @@
             <div class="col-lg-4">
                 <div class="py-3">
                     <h2>ゲーム開始</h2>
+                    <div class="modal fade" id="modal-start">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h3 class=“modal-title”>ゲームを開始しました</h3>
+                                    <button class="close" data-dismiss="modal">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>メモリーゲームの遊び方</p>
+                                    <ol>
+                                        <li>カードをクリックしてめくってみてください</li>
+                                        <li>2枚のカードをめくって表面の数字を比較します</li>
+                                        <ul>
+                                            <li>2つの数字が一致すればカードを獲得できます</li>
+                                            <li>数字が一致しなければ対戦相手のターンに移ります</li>
+                                        </ul>
+                                        <li>さきに全カードの50%を獲得したプレイヤの勝利です</li>
+                                    </ol>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-primary" data-dismiss="modal">確認</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <p>ボタンを押してゲームを開始してください</p>
                     <!-- <div class="form-group"> -->
                     <div class="btn btn-info btn-lg btn-block" id="btn-start-memory">スタート</div>
