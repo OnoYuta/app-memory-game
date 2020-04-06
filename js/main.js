@@ -51,6 +51,7 @@
         constructor() {
             this.stage = $("#stage");
             this.startBtn = $('#btn-start-memory');
+            this.applyBtn = $('#btn-apply-setting');
             this.rivalStrengthLevel = $('#rival-strength-level');
             this.progressBars = {};
             this.numOfCards = {};
@@ -104,6 +105,8 @@
             this.stage.off();
             this.startBtn.off();
             this.startBtn.addClass('disabled');
+            this.applyBtn.addClass('disabled');
+            this.applyBtn.attr('disabled', true);
         }
         activateSettings() {
             this.activateInputSuit();
