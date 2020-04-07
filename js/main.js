@@ -435,11 +435,18 @@
             } else {
                 this.activePlayerIndex = 0;
             }
+
+            // ターン表示を更新する
             $('#toast-turn-who').text(this.players[this.activePlayerIndex].label);
             for (let i = 0; i < this.players.length; i++) {
                 $('#toast-turn-num' + (i + 1)).text(this.players[i].cards.length);
             }
             $('#toast-turn').toast('show');
+
+            // 次がNPCのターンならカードを選択する処理を呼び出す
+            if (this.activePlayer.constructor === Npc) {
+                this.activePlayer.findSameNumberCardsInMemory();
+            }
         }
         /**
          * プレイヤをアクティブにしてゲームを開始する
@@ -534,6 +541,24 @@
          */
         memoryCard(card) {
             this.memorizedCards.push(card);
+        }
+        /**
+         * 記憶したカードの中に同じ数字のペアがあれば返す
+         */
+        findSameNumberCardsInMemory() {
+            let memorizedCardNums = [];
+
+            for (let i = 0; i < this.memorizedCards.length; i++) {
+                let sameNumberCardIndex = $.inArray(this.memorizedCards[i].num, memorizedCardNums);
+
+                if (sameNumberCardIndex !== -1) {
+                    return [this.memorizedCards[sameNumberCardIndex], this.memorizedCards[i]];
+                }
+
+                memorizedCardNums.push(this.memorizedCards[i].num);
+            }
+
+            return -1;
         }
         /**
          * 記憶容量を超えた分のカードを忘れる
