@@ -435,11 +435,18 @@
             } else {
                 this.activePlayerIndex = 0;
             }
+
+            // ターン表示を更新する
             $('#toast-turn-who').text(this.players[this.activePlayerIndex].label);
             for (let i = 0; i < this.players.length; i++) {
                 $('#toast-turn-num' + (i + 1)).text(this.players[i].cards.length);
             }
             $('#toast-turn').toast('show');
+
+            // 次がNPCのターンならカードを選択する処理を呼び出す
+            if (this.activePlayer.constructor === Npc) {
+                this.activePlayer.findSameNumberCardsInMemory();
+            }
         }
         /**
          * プレイヤをアクティブにしてゲームを開始する
@@ -509,7 +516,7 @@
          */
         constructor(name, label, strength) {
             super(name, label);
-            this.hasOpened = [];
+            this.memorizedCards = [];
             this.memoryCapacity = this.getMemoryCapacity(strength);
         }
         /**
@@ -533,40 +540,58 @@
          * @param Card card 
          */
         memoryCard(card) {
-            this.hasOpened.push(card);
+            this.memorizedCards.push(card);
+        }
+        /**
+         * 記憶したカードの中に同じ数字のペアがあれば返す
+         */
+        findSameNumberCardsInMemory() {
+            let memorizedCardNums = [];
+
+            for (let i = 0; i < this.memorizedCards.length; i++) {
+                let sameNumberCardIndex = $.inArray(this.memorizedCards[i].num, memorizedCardNums);
+
+                if (sameNumberCardIndex !== -1) {
+                    return [this.memorizedCards[sameNumberCardIndex], this.memorizedCards[i]];
+                }
+
+                memorizedCardNums.push(this.memorizedCards[i].num);
+            }
+
+            return -1;
         }
         /**
          * 記憶容量を超えた分のカードを忘れる
-         * @param array hasOpened 
+         * @param array memorizedCards 
          * @param int memoryCapacity 
          */
-        forgetHasOpened(hasOpened, memoryCapacity) {
+        forgetMemorizedCards(memorizedCards, memoryCapacity) {
 
-            let forget
+            let forget;
 
             // 覚えるべきカードが記憶容量を超えた場合に忘れる
-            while (hasOpened.length > memoryCapacity) {
-                let forgetHasOpenedIndex = getForgetHasOpenedIndex(hasOpened);
-                forget = hasOpened.splice(forgetHasOpenedIndex, 1);
+            while (memorizedCards.length > memoryCapacity) {
+                let forgetMemorizedCardsIndex = getForgetMemorizedCardsIndex(memorizedCards);
+                forget = memorizedCards.splice(forgetMemorizedCardsIndex, 1);
             }
 
             return forget ? forget[0] : -1;
         }
         /**
          * 忘れるカードのインデックスを取得する
-         * @param array hasOpened 
+         * @param array memorizedCards 
          */
-        getForgetHasOpenedIndex(hasOpened) {
+        getForgetMemorizedCardsIndex(memorizedCards) {
 
-            let weightedHasOpened = [];
+            let weightedMemorizedCards = [];
 
-            for (let i = 0; i < hasOpened.length; i++) {
-                for (let j = hasOpened.length - i; j > 0; j--) {
-                    weightedHasOpened.push(hasOpened[i]);
+            for (let i = 0; i < memorizedCards.length; i++) {
+                for (let j = memorizedCards.length - i; j > 0; j--) {
+                    weightedMemorizedCards.push(memorizedCards[i]);
                 }
             }
 
-            return weightedHasOpened[Math.floor(Math.random() * weightedHasOpened.length)];
+            return weightedMemorizedCards[Math.floor(Math.random() * weightedMemorizedCards.length)];
         }
     }
 
