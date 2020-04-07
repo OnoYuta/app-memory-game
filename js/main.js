@@ -542,7 +542,7 @@
          */
         forgetHasOpened(hasOpened, memoryCapacity) {
 
-            let forget
+            let forget;
 
             // 覚えるべきカードが記憶容量を超えた場合に忘れる
             while (hasOpened.length > memoryCapacity) {
