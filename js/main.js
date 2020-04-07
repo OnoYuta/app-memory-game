@@ -509,7 +509,7 @@
          */
         constructor(name, label, strength) {
             super(name, label);
-            this.hasOpened = [];
+            this.memorizedCards = [];
             this.memoryCapacity = this.getMemoryCapacity(strength);
         }
         /**
@@ -533,40 +533,40 @@
          * @param Card card 
          */
         memoryCard(card) {
-            this.hasOpened.push(card);
+            this.memorizedCards.push(card);
         }
         /**
          * 記憶容量を超えた分のカードを忘れる
-         * @param array hasOpened 
+         * @param array memorizedCards 
          * @param int memoryCapacity 
          */
-        forgetHasOpened(hasOpened, memoryCapacity) {
+        forgetMemorizedCards(memorizedCards, memoryCapacity) {
 
             let forget;
 
             // 覚えるべきカードが記憶容量を超えた場合に忘れる
-            while (hasOpened.length > memoryCapacity) {
-                let forgetHasOpenedIndex = getForgetHasOpenedIndex(hasOpened);
-                forget = hasOpened.splice(forgetHasOpenedIndex, 1);
+            while (memorizedCards.length > memoryCapacity) {
+                let forgetMemorizedCardsIndex = getForgetMemorizedCardsIndex(memorizedCards);
+                forget = memorizedCards.splice(forgetMemorizedCardsIndex, 1);
             }
 
             return forget ? forget[0] : -1;
         }
         /**
          * 忘れるカードのインデックスを取得する
-         * @param array hasOpened 
+         * @param array memorizedCards 
          */
-        getForgetHasOpenedIndex(hasOpened) {
+        getForgetMemorizedCardsIndex(memorizedCards) {
 
-            let weightedHasOpened = [];
+            let weightedMemorizedCards = [];
 
-            for (let i = 0; i < hasOpened.length; i++) {
-                for (let j = hasOpened.length - i; j > 0; j--) {
-                    weightedHasOpened.push(hasOpened[i]);
+            for (let i = 0; i < memorizedCards.length; i++) {
+                for (let j = memorizedCards.length - i; j > 0; j--) {
+                    weightedMemorizedCards.push(memorizedCards[i]);
                 }
             }
 
-            return weightedHasOpened[Math.floor(Math.random() * weightedHasOpened.length)];
+            return weightedMemorizedCards[Math.floor(Math.random() * weightedMemorizedCards.length)];
         }
     }
 
