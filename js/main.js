@@ -518,4 +518,30 @@
     }
 
     init();
+
+    function forgetHasOpened(hasOpened, memoryCapacity) {
+
+        let forget
+
+        // 覚えるべきカードが記憶容量を超えた場合に忘れる
+        while (hasOpened.length > memoryCapacity) {
+            let forgetHasOpenedIndex = getForgetHasOpenedIndex(hasOpened);
+            forget = hasOpened.splice(forgetHasOpenedIndex, 1);
+        }
+
+        return forget ? forget[0] : -1;
+    }
+
+    function getForgetHasOpenedIndex(hasOpened) {
+
+        let weightedHasOpened = [];
+
+        for (let i = 0; i < hasOpened.length; i++) {
+            for (let j = hasOpened.length - i; j > 0; j--) {
+                weightedHasOpened.push(hasOpened[i]);
+            }
+        }
+
+        return weightedHasOpened[Math.floor(Math.random() * weightedHasOpened.length)];
+    }
 }
