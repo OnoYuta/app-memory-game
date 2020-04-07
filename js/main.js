@@ -343,15 +343,27 @@
          */
         selectCard(card) {
 
+            // 誰のターンでもないときはクリックしても何も起こらない
             if (this.activePlayerIndex === null) return;
 
+            // 選択済みのカードはクリックしても何も起こらない
             if ($.inArray(card, this.config.selectedCards) >= 0) return;
 
-            if (this.selectedCards.length < this.config.selectableNum) {
-                card.body.addClass('card-open');
-                this.selectedCards.push(card);
+            // 既に2枚選んでいるときはクリックしても何も起こらない
+            if (this.selectedCards.length >= this.config.selectableNum) return;
+
+            // カードをめくった上でカード情報をボードに保存する
+            card.body.addClass('card-open');
+            this.selectedCards.push(card);
+
+            // NPCにカードを記憶させる
+            for (let i = 0; i < this.players.length; i++) {
+                if (this.players[i].constructor === Npc) {
+                    this.players[i].memoryCard(card);
+                }
             }
 
+            // 2枚選んだら数字の比較を実行する
             if (this.selectedCards.length >= this.config.selectableNum) {
                 this.tryGetCards();
                 return;
@@ -515,6 +527,13 @@
             }
 
             return 5;
+        }
+        /**
+         * 表になったカードを記憶する
+         * @param Card card 
+         */
+        memoryCard(card) {
+            this.hasOpened.push(card);
         }
         /**
          * 記憶容量を超えた分のカードを忘れる
