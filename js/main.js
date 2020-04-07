@@ -299,6 +299,15 @@
             this.players.push(new Player(name, label));
         }
         /**
+         * ゲームにNPCを参加させる
+         * @param string name 
+         * @param string label 
+         * @param int strength 
+         */
+        addNpc(name, label, strength) {
+            this.players.push(new Npc(name, label, strength));
+        }
+        /**
          * ゲームの進捗をHTMLに反映させる
          */
         updateDisplay() {
@@ -316,11 +325,17 @@
             });
             this.cards.push(card);
         }
-        setPalyers(playerNameLabelMap) {
-            let board = this;
-            $.each(playerNameLabelMap, function (name, label) {
-                board.addPlayer(name, label);
-            });
+        setPalyers(playerNameLabelMap, strength) {
+            let playerNames = Object.keys(playerNameLabelMap);
+            for (let i = 0; i < playerNames.length; i++) {
+                let label = playerNameLabelMap[playerNames[i]];
+                if (i === 1 && strength > 0) {
+                    this.addNpc(playerNames[i], label, strength);
+                    continue;
+                }
+
+                this.addPlayer(playerNames[i], label);
+            }
         }
         /**
          * カードを選択する
@@ -471,6 +486,72 @@
     }
 
     /**
+     * プログラムによる自動操作のプレイヤ
+     */
+    class Npc extends Player {
+        /**
+         * コンストラクタ
+         * @param string name 
+         * @param string label 
+         * @param int strength 
+         */
+        constructor(name, label, strength) {
+            super(name, label);
+            this.hasOpened = [];
+            this.memoryCapacity = this.getMemoryCapacity(strength);
+        }
+        /**
+         * 設定した強さに応じて記憶容量を定める
+         * @param int strength 
+         */
+        getMemoryCapacity(strength) {
+            switch (strength) {
+                case 1:
+                    return 3;
+                case 2:
+                    return 5;
+                case 3:
+                    return 7;
+            }
+
+            return 5;
+        }
+        /**
+         * 記憶容量を超えた分のカードを忘れる
+         * @param array hasOpened 
+         * @param int memoryCapacity 
+         */
+        forgetHasOpened(hasOpened, memoryCapacity) {
+
+            let forget
+
+            // 覚えるべきカードが記憶容量を超えた場合に忘れる
+            while (hasOpened.length > memoryCapacity) {
+                let forgetHasOpenedIndex = getForgetHasOpenedIndex(hasOpened);
+                forget = hasOpened.splice(forgetHasOpenedIndex, 1);
+            }
+
+            return forget ? forget[0] : -1;
+        }
+        /**
+         * 忘れるカードのインデックスを取得する
+         * @param array hasOpened 
+         */
+        getForgetHasOpenedIndex(hasOpened) {
+
+            let weightedHasOpened = [];
+
+            for (let i = 0; i < hasOpened.length; i++) {
+                for (let j = hasOpened.length - i; j > 0; j--) {
+                    weightedHasOpened.push(hasOpened[i]);
+                }
+            }
+
+            return weightedHasOpened[Math.floor(Math.random() * weightedHasOpened.length)];
+        }
+    }
+
+    /**
      * ゲーム開始に必要な準備をする
      */
     function init() {
@@ -482,7 +563,7 @@
         display.activateSettings();
 
         let board = new Board(config, display);
-        board.setPalyers(config.playerNameLabelMap);
+        board.setPalyers(config.playerNameLabelMap, config.rivalStrengthLevel);
 
         // 使用するカードをボードにセットする
         for (let i = 1; i <= config.maxCardNum; i++) {
@@ -518,30 +599,4 @@
     }
 
     init();
-
-    function forgetHasOpened(hasOpened, memoryCapacity) {
-
-        let forget
-
-        // 覚えるべきカードが記憶容量を超えた場合に忘れる
-        while (hasOpened.length > memoryCapacity) {
-            let forgetHasOpenedIndex = getForgetHasOpenedIndex(hasOpened);
-            forget = hasOpened.splice(forgetHasOpenedIndex, 1);
-        }
-
-        return forget ? forget[0] : -1;
-    }
-
-    function getForgetHasOpenedIndex(hasOpened) {
-
-        let weightedHasOpened = [];
-
-        for (let i = 0; i < hasOpened.length; i++) {
-            for (let j = hasOpened.length - i; j > 0; j--) {
-                weightedHasOpened.push(hasOpened[i]);
-            }
-        }
-
-        return weightedHasOpened[Math.floor(Math.random() * weightedHasOpened.length)];
-    }
 }
