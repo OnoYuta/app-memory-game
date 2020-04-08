@@ -640,6 +640,11 @@
          * @param Card card 
          */
         memoryCard(card) {
+
+            this.memorizedCards = this.memorizedCards.filter(function (card) {
+                return !(card.num === this.num && card.suit === this.suit);
+            }, card);
+
             this.memorizedCards.push(card);
         }
         /**
