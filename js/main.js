@@ -344,8 +344,10 @@
          * @param Card card 
          */
         selectCard(card) {
+            // 選択済みのカードはクリックしても何も起こらない
+            if ($.inArray(card, this.selectedCards) >= 0) return false;
 
-            if (!this.isSelectable) return;
+            if (!this.isSelectable()) return;
 
             // カードをめくった上でカード情報をボードに保存する
             card.body.addClass('card-open');
@@ -370,9 +372,6 @@
         isSelectable() {
             // 誰のターンでもないときはクリックしても何も起こらない
             if (this.activePlayerIndex === null) return false;
-
-            // 選択済みのカードはクリックしても何も起こらない
-            if ($.inArray(card, this.config.selectedCards) >= 0) return false;
 
             // 既に2枚選んでいるときはクリックしても何も起こらない
             if (this.selectedCards.length >= this.config.selectableNum) return false;
@@ -414,7 +413,6 @@
          * 選んだカードをアクティブなプレイヤのものにする
          */
         getCardsAsActivePlayer() {
-            console.log(this.players[1].memorizedCards);
 
             while (this.selectedCards.length > 0) {
                 let card = this.selectedCards.shift();
@@ -433,8 +431,6 @@
                 card.body.off();
                 this.activePlayer.cards.push(card);
             }
-            console.log(this.players[1].memorizedCards);
-
         }
         /**
          * 表にしたカードを裏に戻して
@@ -472,7 +468,28 @@
 
             // 次がNPCのターンならカードを選択する処理を呼び出す
             if (this.activePlayer.constructor === Npc) {
-                this.activePlayer.findSameNumberCardsInMemory();
+                let board = this;
+                setTimeout(function () {
+                    board.repeatAutoCardSelectionAsNpc(board);
+                }, 2000);
+            }
+        }
+        /**
+         * NPCが自動でカードを選択する処理を繰り返す
+         * @param Board board 
+         */
+        repeatAutoCardSelectionAsNpc(board) {
+            board.selectCard(board.activePlayer.selectCardAtRandom(board.cards));
+
+            // NPCがカードを獲得したときはアクションが完了するように2秒待つ
+            if (board.selectedCards.length === 0) {
+                setTimeout(function () {
+                    board.repeatAutoCardSelectionAsNpc(board);
+                }, 2000);
+            } else if (board.selectedCards.length < board.config.selectableNum) {
+                setTimeout(function () {
+                    board.repeatAutoCardSelectionAsNpc(board);
+                }, 1000);
             }
         }
         /**
@@ -628,6 +645,13 @@
             }
 
             return weightedMemorizedCards[Math.floor(Math.random() * weightedMemorizedCards.length)];
+        }
+        /**
+         * ランダムにカードを選択する
+         * @param Array cards 
+         */
+        selectCardAtRandom(cards) {
+            return cards[Math.floor(Math.random() * cards.length)];
         }
     }
 
