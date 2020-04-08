@@ -427,9 +427,7 @@
                 // 選んだカードをNPCの記憶から削除する
                 for (let i = 0; i < this.players.length; i++) {
                     if (this.players[i].constructor !== Npc) continue;
-                    this.players[i].memorizedCards = this.players[i].memorizedCards.filter(function (card) {
-                        return !(card.num === this.num && card.suit === this.suit);
-                    }, card);
+                    this.players[i].removeCardFromMemory(card);
                 }
 
                 card.body.off();
@@ -570,6 +568,15 @@
          */
         memoryCard(card) {
             this.memorizedCards.push(card);
+        }
+        /**
+         * 指定したカードを記憶から削除する
+         * @param Card card 
+         */
+        removeCardFromMemory(card) {
+            this.memorizedCards = this.memorizedCards.filter(function (card) {
+                return !(card.num === this.num && card.suit === this.suit);
+            }, card);
         }
         /**
          * 記憶したカードの中に同じ数字のペアがあれば返す
