@@ -321,7 +321,7 @@
         appendCard(card) {
             let board = this;
             card.body.click([card, board], function () {
-                if (board.activePlayer.constructor !== Npc) {
+                if (board.activePlayerIndex !== null && board.activePlayer.constructor !== Npc) {
                     board.selectCard(card);
                 }
             });
@@ -414,10 +414,29 @@
          * 選んだカードをアクティブなプレイヤのものにする
          */
         getCardsAsActivePlayer() {
+            console.log(this.players[1].memorizedCards);
+
             while (this.selectedCards.length > 0) {
-                let card = this.selectedCards.shift().body.off();
+                let card = this.selectedCards.shift();
+
+                // 選んだカードをボードから削除する
+                this.cards = this.cards.filter(function (card) {
+                    return !(card.num === this.num && card.suit === this.suit);
+                }, card);
+
+                // 選んだカードをNPCの記憶から削除する
+                for (let i = 0; i < this.players.length; i++) {
+                    if (this.players[i].constructor !== Npc) continue;
+                    this.players[i].memorizedCards = this.players[i].memorizedCards.filter(function (card) {
+                        return !(card.num === this.num && card.suit === this.suit);
+                    }, card);
+                }
+
+                card.body.off();
                 this.activePlayer.cards.push(card);
             }
+            console.log(this.players[1].memorizedCards);
+
         }
         /**
          * 表にしたカードを裏に戻して
