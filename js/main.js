@@ -321,7 +321,9 @@
         appendCard(card) {
             let board = this;
             card.body.click([card, board], function () {
-                board.selectCard(card);
+                if (board.activePlayer.constructor !== Npc) {
+                    board.selectCard(card);
+                }
             });
             this.cards.push(card);
         }
@@ -343,14 +345,7 @@
          */
         selectCard(card) {
 
-            // 誰のターンでもないときはクリックしても何も起こらない
-            if (this.activePlayerIndex === null) return;
-
-            // 選択済みのカードはクリックしても何も起こらない
-            if ($.inArray(card, this.config.selectedCards) >= 0) return;
-
-            // 既に2枚選んでいるときはクリックしても何も起こらない
-            if (this.selectedCards.length >= this.config.selectableNum) return;
+            if (!this.isSelectable) return;
 
             // カードをめくった上でカード情報をボードに保存する
             card.body.addClass('card-open');
@@ -368,6 +363,21 @@
                 this.tryGetCards();
                 return;
             }
+        }
+        /**
+         * ユーザがカードを選択可能な状態であればtrueを返す
+         */
+        isSelectable() {
+            // 誰のターンでもないときはクリックしても何も起こらない
+            if (this.activePlayerIndex === null) return false;
+
+            // 選択済みのカードはクリックしても何も起こらない
+            if ($.inArray(card, this.config.selectedCards) >= 0) return false;
+
+            // 既に2枚選んでいるときはクリックしても何も起こらない
+            if (this.selectedCards.length >= this.config.selectableNum) return false;
+
+            return true;
         }
         /**
          * 選んだ2枚の番号が一致すればカードを獲得する
