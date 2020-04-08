@@ -470,6 +470,7 @@
             if (this.activePlayer.constructor === Npc) {
                 let board = this;
                 setTimeout(function () {
+                    console.log('2秒まちました');
                     board.repeatAutoCardSelectionAsNpc(board);
                 }, 2000);
             }
@@ -479,17 +480,72 @@
          * @param Board board 
          */
         repeatAutoCardSelectionAsNpc(board) {
-            board.selectCard(board.activePlayer.selectCardAtRandom(board.cards));
+            let selectedCardsNum = board.selectedCards.length;
+            let sameNumberCards = board.activePlayer.findSameNumberCardsInMemory();
+            // console.log(sameNumberCardsIndex + 'sameNumberCardsIndex');
+
+            if (selectedCardsNum === 0 && sameNumberCards !== -1) {
+                board.selectSameNumberCardsAsNpc(board, sameNumberCards);
+                return;
+            }
 
             // NPCがカードを獲得したときはアクションが完了するように2秒待つ
-            if (board.selectedCards.length === 0) {
+            console.log(board.selectedCards.length + '枚のカードを選んでいます');
+
+            board.selectCard(board.activePlayer.selectCardAtRandom(board.cards));
+            selectedCardsNum = board.selectedCards.length;
+            console.log(board.selectedCards.length + '枚のカードを選んでいます');
+
+            switch (selectedCardsNum) {
+                case board.config.selectableNum: // 間違えたとき
+                    console.log('間違えたので帰ります');
+                    return;
+                case 0: // 数字が一致したとき
+                    setTimeout(function () {
+                        console.log('2秒まちました');
+                        board.repeatAutoCardSelectionAsNpc(board);
+                    }, 2000);
+                    break;
+                default: // これから2枚目を選択するとき
+                    setTimeout(function () {
+                        console.log('1秒まちました');
+                        board.repeatAutoCardSelectionAsNpc(board);
+                    }, 1000);
+            }
+        }
+        /**
+         * 引数で渡したカードを再帰的に選択させる
+         * @param  Board board 
+         * @param array sameNumberCards 
+         */
+        selectSameNumberCardsAsNpc(board, sameNumberCards) {
+            console.log('それ知ってる！');
+            let card = sameNumberCards.shift();
+            board.selectCard(card);
+
+            // もう知っているカードがないとき
+            if (sameNumberCards.length === 0 && board.selectedCards.length === 0) {
+                // 2秒後にランダムにカードを選ぶ
                 setTimeout(function () {
                     board.repeatAutoCardSelectionAsNpc(board);
                 }, 2000);
-            } else if (board.selectedCards.length < board.config.selectableNum) {
+                return;
+            }
+
+            // 2枚目のカードをめくるとき
+            if (sameNumberCards.length % 2 === 1) {
                 setTimeout(function () {
-                    board.repeatAutoCardSelectionAsNpc(board);
+                    board.selectSameNumberCardsAsNpc(board, sameNumberCards);
                 }, 1000);
+                return;
+            }
+
+            // 1枚目のカードをめくるとき（現在の仕様では起こり得ない）
+            if (sameNumberCards.length % 2 === 0) {
+                setTimeout(function () {
+                    board.selectSameNumberCardsAsNpc(board, sameNumberCards);
+                }, 2000);
+                return;
             }
         }
         /**
@@ -651,6 +707,7 @@
          * @param Array cards 
          */
         selectCardAtRandom(cards) {
+            console.log('ランダムに選ぶ');
             return cards[Math.floor(Math.random() * cards.length)];
         }
     }
