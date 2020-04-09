@@ -24,11 +24,38 @@
             </button>
             <div class="collapse navbar-collapse" id="mainNav">
                 <ul class="navbar-nav">
-                    <li class="nav-item"><a href="#" class="nav-link">セッティング</a>
+                    <li class="nav-item">
+                        <div class="dropdown">
+                            <a class="nav-link" data-toggle="dropdown">マーク</a>
+                            <div class="dropdown-menu">
+                                <div class="dropdown-item" id="dropdown-item-suit-limited">スペード・ハートのみ</div>
+                                <div class="dropdown-item" id="dropdown-item-suit-all">全種類</div>
+                            </div>
+                        </div>
                     </li>
-                    <li class="nav-item"><a href="#" class="nav-link">プログレス</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link">ステータス</a>
+                    <li class="nav-item">
+                        <div class="dropdown">
+                            <a class="nav-link" data-toggle="dropdown">カード枚数</a>
+                            <div class="dropdown-menu">
+                                <div class="dropdown-item" id="dropdown-item-max-card-num-3">3 以下のカードのみ</div>
+                                <div class="dropdown-item" id="dropdown-item-max-card-num-6">6 以下のカードのみ</div>
+                                <div class="dropdown-item" id="dropdown-item-max-card-num-9">9 以下のカードのみ</div>
+                            </div>
+                        </div>
                     </li>
+                    <li class="nav-item">
+                        <div class="dropdown">
+                            <a class="nav-link" data-toggle="dropdown">ライバルの強さ</a>
+                            <div class="dropdown-menu">
+                                <div class="dropdown-item" id="dropdown-item-rival-strength-1">易しい</div>
+                                <div class="dropdown-item" id="dropdown-item-rival-strength-2">標準</div>
+                                <div class="dropdown-item" id="dropdown-item-rival-strength-3">難しい</div>
+                                <div class="dropdown-item" id="dropdown-item-rival-strength-4">マニュアル</div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="nav-item"><a href="#progress" class="nav-link">プログレス</a></li>
+                    <li class="nav-item"><a href="#status" class="nav-link">ステータス</a></li>
                 </ul>
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item"><a href="#" class="nav-link">別のプロジェクト</a></li>
@@ -133,7 +160,7 @@
         </div>
         <!-- progress-bar -->
         <div class="py-3">
-            <h2>プログレス</h2>
+            <h2 id="progress">プログレス</h2>
             <p>各プレイヤが獲得したカード枚数が全体に占める割合をグラフで表示します</p>
             <div class="progress" style="height: 24px;">
                 <div id="progress-bar1" class="progress-bar bg-info" role="progressbar" style="width: 15%"
@@ -144,7 +171,7 @@
         </div>
         <!-- setting-cards -->
         <div class="py-3">
-            <h2>ステータス</h2>
+            <h2 id="status">ステータス</h2>
             <p>各プレイヤが獲得したカードの枚数と現在の難易度の設定を表示します</p>
             <div class="card-deck text-center">
                 <div class="card mb-4 shadow-sm">
