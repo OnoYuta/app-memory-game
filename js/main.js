@@ -38,7 +38,7 @@
             }
         }
         updateRivalStrengthLevel(rivalStrengthLevel) {
-            if ($.isNumeric(rivalStrengthLevel) && rivalStrengthLevel <= 3 && rivalStrengthLevel >= 0) {
+            if ($.isNumeric(rivalStrengthLevel) && rivalStrengthLevel <= 4 && rivalStrengthLevel >= 1) {
                 this.rivalStrengthLevel = rivalStrengthLevel;
             }
         }
@@ -147,16 +147,16 @@
             return true;
         }
         activateInputSuit() {
-            let input = $('#input-suit');
-            let label = $('#label-input-suit');
+            let input = $('[id=input-suit]');
+            let label = $('[id=label-input-suit]');
 
             let menus = [
                 {
-                    'selector': '#dropdown-item-suit-limited',
+                    'selector': '[id=dropdown-item-suit-limited]',
                     'value': 'limited'
                 },
                 {
-                    'selector': '#dropdown-item-suit-all',
+                    'selector': '[id=dropdown-item-suit-all]',
                     'value': 'all'
                 }
             ];
@@ -165,20 +165,20 @@
             this.activateInputMenu(menus, input, label);
         }
         activateInputMaxCardNum() {
-            let input = $('#input-max-card-num');
-            let label = $('#label-input-max-card-num');
+            let input = $('[id=input-max-card-num]');
+            let label = $('[id=label-input-max-card-num]');
 
             let menus = [
                 {
-                    'selector': '#dropdown-item-max-card-num-3',
+                    'selector': '[id=dropdown-item-max-card-num-3]',
                     'value': 3
                 },
                 {
-                    'selector': '#dropdown-item-max-card-num-6',
+                    'selector': '[id=dropdown-item-max-card-num-6]',
                     'value': 6
                 },
                 {
-                    'selector': '#dropdown-item-max-card-num-9',
+                    'selector': '[id=dropdown-item-max-card-num-9]',
                     'value': 9
                 }
             ];
@@ -187,25 +187,25 @@
             this.activateInputMenu(menus, input, label);
         }
         activateInputRivalStrengthLevel() {
-            let input = $('#input-rival-strength-level');
-            let label = $('#label-input-rival-strength-level');
+            let input = $('[id=input-rival-strength-level]');
+            let label = $('[id=label-input-rival-strength-level]');
 
             let menus = [
                 {
-                    'selector': '#dropdown-item-rival-strength-1',
+                    'selector': '[id=dropdown-item-rival-strength-1]',
                     'value': 1
                 },
                 {
-                    'selector': '#dropdown-item-rival-strength-2',
+                    'selector': '[id=dropdown-item-rival-strength-2]',
                     'value': 2
                 },
                 {
-                    'selector': '#dropdown-item-rival-strength-3',
+                    'selector': '[id=dropdown-item-rival-strength-3]',
                     'value': 3
                 },
                 {
-                    'selector': '#dropdown-item-rival-strength-0',
-                    'value': 0
+                    'selector': '[id=dropdown-item-rival-strength-4]',
+                    'value': 4
                 },
             ];
 
