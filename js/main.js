@@ -108,7 +108,7 @@
 
             this.stage.off();
             this.startBtn.off();
-            this.startBtn.addClass('disabled');
+            this.startBtn.addClass('btn-dark');
             this.applyBtn.addClass('disabled');
             this.applyBtn.attr('disabled', true);
         }
@@ -458,6 +458,7 @@
             } else {
                 this.activePlayerIndex = 0;
             }
+            this.display.startBtn.html(this.activePlayer.label + 'のターン');
 
             // ターン表示を更新する
             $('#toast-turn-who').text(this.players[this.activePlayerIndex].label);
@@ -565,6 +566,7 @@
          */
         start() {
             this.activePlayerIndex = 0;
+            this.display.startBtn.html(this.activePlayer.label + 'のターン');
         }
     }
 
