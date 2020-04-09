@@ -1,5 +1,10 @@
 @import "../scss/bootstrap";
 
+button:disabled{
+  cursor: not-allowed;
+  pointer-events: all !important;
+}
+
 .card-wrapper {
   perspective: 100px;
   /* 奥行きを指定 */
