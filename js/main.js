@@ -321,7 +321,9 @@
         appendCard(card) {
             let board = this;
             card.body.click([card, board], function () {
-                board.selectCard(card);
+                if (board.activePlayerIndex !== null && board.activePlayer.constructor !== Npc) {
+                    board.selectCard(card);
+                }
             });
             this.cards.push(card);
         }
@@ -342,15 +344,10 @@
          * @param Card card 
          */
         selectCard(card) {
-
-            // 誰のターンでもないときはクリックしても何も起こらない
-            if (this.activePlayerIndex === null) return;
-
             // 選択済みのカードはクリックしても何も起こらない
-            if ($.inArray(card, this.config.selectedCards) >= 0) return;
+            if ($.inArray(card, this.selectedCards) >= 0) return false;
 
-            // 既に2枚選んでいるときはクリックしても何も起こらない
-            if (this.selectedCards.length >= this.config.selectableNum) return;
+            if (!this.isSelectable()) return;
 
             // カードをめくった上でカード情報をボードに保存する
             card.body.addClass('card-open');
@@ -368,6 +365,18 @@
                 this.tryGetCards();
                 return;
             }
+        }
+        /**
+         * ユーザがカードを選択可能な状態であればtrueを返す
+         */
+        isSelectable() {
+            // 誰のターンでもないときはクリックしても何も起こらない
+            if (this.activePlayerIndex === null) return false;
+
+            // 既に2枚選んでいるときはクリックしても何も起こらない
+            if (this.selectedCards.length >= this.config.selectableNum) return false;
+
+            return true;
         }
         /**
          * 選んだ2枚の番号が一致すればカードを獲得する
@@ -404,13 +413,27 @@
          * 選んだカードをアクティブなプレイヤのものにする
          */
         getCardsAsActivePlayer() {
+
             while (this.selectedCards.length > 0) {
-                let card = this.selectedCards.shift().body.off();
+                let card = this.selectedCards.shift();
+
+                // 選んだカードをボードから削除する
+                this.cards = this.cards.filter(function (card) {
+                    return !(card.num === this.num && card.suit === this.suit);
+                }, card);
+
+                // 選んだカードをNPCの記憶から削除する
+                for (let i = 0; i < this.players.length; i++) {
+                    if (this.players[i].constructor !== Npc) continue;
+                    this.players[i].removeCardFromMemory(card);
+                }
+
+                card.body.off();
                 this.activePlayer.cards.push(card);
             }
         }
         /**
-         * 表にしたカードを裏に戻して
+         * 表にしたカードを裏に戻す
          */
         resetCards() {
             let lastCard = this.selectedCards[this.selectedCards.length - 1];
@@ -445,7 +468,96 @@
 
             // 次がNPCのターンならカードを選択する処理を呼び出す
             if (this.activePlayer.constructor === Npc) {
-                this.activePlayer.findSameNumberCardsInMemory();
+                let board = this;
+                setTimeout(function () {
+                    console.log('2秒まちました');
+                    board.repeatAutoCardSelectionAsNpc(board);
+                }, 2000);
+            }
+        }
+        /**
+         * NPCが自動でカードを選択する処理を繰り返す
+         * @param Board board 
+         */
+        repeatAutoCardSelectionAsNpc(board) {
+            let selectedCardsNum = board.selectedCards.length;
+            let sameNumberCards = board.activePlayer.findSameNumberCardsInMemory();
+
+            // NPCの記憶の中で同じ数字のペアが作れるとき
+            if (selectedCardsNum === 0 && sameNumberCards !== -1) {
+                board.selectSameNumberCardsAsNpc(board, sameNumberCards);
+                return;
+            }
+
+            // NPCがカードを獲得したときはアクションが完了するように2秒待つ
+            console.log(board.selectedCards.length + '枚のカードを選んでいます');
+
+            board.selectCard(board.activePlayer.selectCardAtRandom(board.cards));
+            selectedCardsNum = board.selectedCards.length;
+            console.log(board.selectedCards.length + '枚のカードを選んでいます');
+
+            switch (selectedCardsNum) {
+                case board.config.selectableNum: // 間違えたとき
+                    console.log('間違えたので帰ります');
+                    return;
+                case 0: // 数字が一致したとき
+                    setTimeout(function () {
+                        console.log('2秒まちました');
+                        board.repeatAutoCardSelectionAsNpc(board);
+                    }, 2000);
+                    break;
+                default: // これから2枚目を選択するとき
+                    setTimeout(function () {
+                        console.log('1秒まちました');
+                        let sameNuberCard = board.activePlayer.findSameNumberCardWithLastMemorized();
+                        console.log('次の出力がsameNuberCard');
+                        console.log(sameNuberCard);
+                        if (sameNuberCard === -1) {
+                            board.repeatAutoCardSelectionAsNpc(board);
+                        } else {
+                            console.log('どこかでみたかも');
+                            board.selectCard(sameNuberCard);
+                            setTimeout(function () {
+                                console.log('2秒まちました');
+                                board.repeatAutoCardSelectionAsNpc(board);
+                            }, 2000);
+                        }
+                    }, 1000);
+            }
+        }
+        /**
+         * 引数で渡したカードを再帰的に選択させる
+         * @param  Board board 
+         * @param array sameNumberCards 
+         */
+        selectSameNumberCardsAsNpc(board, sameNumberCards) {
+            console.log('それ知ってる！');
+            let card = sameNumberCards.shift();
+            board.selectCard(card);
+
+            // もう知っているカードがないとき
+            if (sameNumberCards.length === 0 && board.selectedCards.length === 0) {
+                // 2秒後にランダムにカードを選ぶ
+                setTimeout(function () {
+                    board.repeatAutoCardSelectionAsNpc(board);
+                }, 2000);
+                return;
+            }
+
+            // 2枚目のカードをめくるとき
+            if (sameNumberCards.length % 2 === 1) {
+                setTimeout(function () {
+                    board.selectSameNumberCardsAsNpc(board, sameNumberCards);
+                }, 1000);
+                return;
+            }
+
+            // 1枚目のカードをめくるとき（現在の仕様では起こり得ない）
+            if (sameNumberCards.length % 2 === 0) {
+                setTimeout(function () {
+                    board.selectSameNumberCardsAsNpc(board, sameNumberCards);
+                }, 2000);
+                return;
             }
         }
         /**
@@ -540,7 +652,21 @@
          * @param Card card 
          */
         memoryCard(card) {
+
+            this.memorizedCards = this.memorizedCards.filter(function (card) {
+                return !(card.num === this.num && card.suit === this.suit);
+            }, card);
+
             this.memorizedCards.push(card);
+        }
+        /**
+         * 指定したカードを記憶から削除する
+         * @param Card card 
+         */
+        removeCardFromMemory(card) {
+            this.memorizedCards = this.memorizedCards.filter(function (card) {
+                return !(card.num === this.num && card.suit === this.suit);
+            }, card);
         }
         /**
          * 記憶したカードの中に同じ数字のペアがあれば返す
@@ -556,6 +682,23 @@
                 }
 
                 memorizedCardNums.push(this.memorizedCards[i].num);
+            }
+
+            return -1;
+        }
+        /**
+         * 最後に記憶したカードと同じ数字のカードを記憶から探す
+         * @param int num 
+         */
+        findSameNumberCardWithLastMemorized() {
+            let lastMemorizedCard = this.memorizedCards[this.memorizedCards.length - 1];
+
+            let sameNumberCards = this.memorizedCards.filter(function (card) {
+                return (card.num === lastMemorizedCard.num && card.suit !== lastMemorizedCard.suit);
+            }, lastMemorizedCard);
+
+            if (sameNumberCards.length !== 0) {
+                return sameNumberCards.shift();
             }
 
             return -1;
@@ -592,6 +735,14 @@
             }
 
             return weightedMemorizedCards[Math.floor(Math.random() * weightedMemorizedCards.length)];
+        }
+        /**
+         * ランダムにカードを選択する
+         * @param Array cards 
+         */
+        selectCardAtRandom(cards) {
+            console.log('ランダムに選ぶ');
+            return cards[Math.floor(Math.random() * cards.length)];
         }
     }
 
