@@ -433,7 +433,7 @@
             }
         }
         /**
-         * 表にしたカードを裏に戻して
+         * 表にしたカードを裏に戻す
          */
         resetCards() {
             let lastCard = this.selectedCards[this.selectedCards.length - 1];
@@ -482,8 +482,8 @@
         repeatAutoCardSelectionAsNpc(board) {
             let selectedCardsNum = board.selectedCards.length;
             let sameNumberCards = board.activePlayer.findSameNumberCardsInMemory();
-            // console.log(sameNumberCardsIndex + 'sameNumberCardsIndex');
 
+            // NPCの記憶の中で同じ数字のペアが作れるとき
             if (selectedCardsNum === 0 && sameNumberCards !== -1) {
                 board.selectSameNumberCardsAsNpc(board, sameNumberCards);
                 return;
@@ -509,7 +509,19 @@
                 default: // これから2枚目を選択するとき
                     setTimeout(function () {
                         console.log('1秒まちました');
-                        board.repeatAutoCardSelectionAsNpc(board);
+                        let sameNuberCard = board.activePlayer.findSameNumberCardWithLastMemorized();
+                        console.log('次の出力がsameNuberCard');
+                        console.log(sameNuberCard);
+                        if (sameNuberCard === -1) {
+                            board.repeatAutoCardSelectionAsNpc(board);
+                        } else {
+                            console.log('どこかでみたかも');
+                            board.selectCard(sameNuberCard);
+                            setTimeout(function () {
+                                console.log('2秒まちました');
+                                board.repeatAutoCardSelectionAsNpc(board);
+                            }, 2000);
+                        }
                     }, 1000);
             }
         }
@@ -670,6 +682,23 @@
                 }
 
                 memorizedCardNums.push(this.memorizedCards[i].num);
+            }
+
+            return -1;
+        }
+        /**
+         * 最後に記憶したカードと同じ数字のカードを記憶から探す
+         * @param int num 
+         */
+        findSameNumberCardWithLastMemorized() {
+            let lastMemorizedCard = this.memorizedCards[this.memorizedCards.length - 1];
+
+            let sameNumberCards = this.memorizedCards.filter(function (card) {
+                return (card.num === lastMemorizedCard.num && card.suit !== lastMemorizedCard.suit);
+            }, lastMemorizedCard);
+
+            if (sameNumberCards.length !== 0) {
+                return sameNumberCards.shift();
             }
 
             return -1;
