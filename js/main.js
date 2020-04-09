@@ -331,7 +331,7 @@
             let playerNames = Object.keys(playerNameLabelMap);
             for (let i = 0; i < playerNames.length; i++) {
                 let label = playerNameLabelMap[playerNames[i]];
-                if (i === 1 && strength > 0) {
+                if (i === 1 && strength < 4) {
                     this.addNpc(playerNames[i], label, strength);
                     continue;
                 }
