@@ -6926,6 +6926,9 @@ button:disabled {
   cursor: not-allowed;
   pointer-events: all !important; }
 
+.dropdown:hover > .dropdown-menu {
+  display: block; }
+
 .card-wrapper {
   perspective: 100px;
   /* 奥行きを指定 */
