@@ -52,7 +52,9 @@
             this.stage = $("#stage");
             this.startBtn = $('#btn-start-memory');
             this.applyBtn = $('#btn-apply-setting');
+            this.dropdownToggle = $('.dropdown-toggle');
             this.rivalStrengthLevel = $('#rival-strength-level');
+            this.submitBtn = $('.btn-submit');
             this.progressBars = {};
             this.numOfCards = {};
         }
@@ -107,15 +109,21 @@
             });
 
             this.stage.off();
-            this.startBtn.off();
+            this.submitBtn.off();
+            this.startBtn.off()
             this.startBtn.addClass('btn-dark');
-            this.applyBtn.addClass('disabled');
-            this.applyBtn.attr('disabled', true);
+            this.dropdownToggle.attr('disabled', true).addClass('disabled');
+        }
+        activateNavFormBtn() {
+            this.submitBtn.click(function () {
+                $('form').submit();
+            });
         }
         activateSettings() {
             this.activateInputSuit();
             this.activateInputMaxCardNum();
             this.activateInputRivalStrengthLevel();
+            this.activateNavFormBtn();
         }
         activateInputMenu(menus, input, label) {
             for (let i = 0; i < menus.length; i++) {

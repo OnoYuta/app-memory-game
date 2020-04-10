@@ -28,8 +28,8 @@
                         <div class="dropdown">
                             <a class="nav-link" data-toggle="dropdown">マーク</a>
                             <ul class="dropdown-menu">
-                                <li class="dropdown-item" id="dropdown-item-suit-limited">スペード・ハートのみ</li>
-                                <li class="dropdown-item" id="dropdown-item-suit-all">全種類</li>
+                                <li class="dropdown-item btn-submit" id="dropdown-item-suit-limited">スペード・ハートのみ</li>
+                                <li class="dropdown-item btn-submit" id="dropdown-item-suit-all">全種類</li>
                             </ul>
                         </div>
                     </li>
@@ -37,9 +37,9 @@
                         <div class="dropdown">
                             <a class="nav-link" data-toggle="dropdown">カード枚数</a>
                             <ul class="dropdown-menu">
-                                <li class="dropdown-item" id="dropdown-item-max-card-num-3">3 以下のカードのみ</li>
-                                <li class="dropdown-item" id="dropdown-item-max-card-num-6">6 以下のカードのみ</li>
-                                <li class="dropdown-item" id="dropdown-item-max-card-num-9">9 以下のカードのみ</li>
+                                <li class="dropdown-item btn-submit" id="dropdown-item-max-card-num-3">3 以下のカードのみ</li>
+                                <li class="dropdown-item btn-submit" id="dropdown-item-max-card-num-6">6 以下のカードのみ</li>
+                                <li class="dropdown-item btn-submit" id="dropdown-item-max-card-num-9">9 以下のカードのみ</li>
                             </ul>
                         </div>
                     </li>
@@ -47,10 +47,10 @@
                         <div class="dropdown">
                             <a class="nav-link" data-toggle="dropdown">ライバルの強さ</a>
                             <ul class="dropdown-menu">
-                                <li class="dropdown-item" id="dropdown-item-rival-strength-1">易しい</li>
-                                <li class="dropdown-item" id="dropdown-item-rival-strength-2">標準</li>
-                                <li class="dropdown-item" id="dropdown-item-rival-strength-3">難しい</li>
-                                <li class="dropdown-item" id="dropdown-item-rival-strength-4">マニュアル</li>
+                                <li class="dropdown-item btn-submit" id="dropdown-item-rival-strength-1">易しい</li>
+                                <li class="dropdown-item btn-submit" id="dropdown-item-rival-strength-2">標準</li>
+                                <li class="dropdown-item btn-submit" id="dropdown-item-rival-strength-3">難しい</li>
+                                <li class="dropdown-item btn-submit" id="dropdown-item-rival-strength-4">マニュアル</li>
                             </ul>
                         </div>
                     </li>
@@ -102,8 +102,8 @@
                             <button id="label-input-suit" class="btn btn-lg btn-block btn-outline-info dropdown-toggle"
                                 data-toggle="dropdown">マーク</button>
                             <div class="dropdown-menu">
-                                <div class="dropdown-item" id="dropdown-item-suit-limited">スペード・ハートのみ</div>
-                                <div class="dropdown-item" id="dropdown-item-suit-all">全種類</div>
+                                <div class="dropdown-item btn-submit" id="dropdown-item-suit-limited">スペード・ハートのみ</div>
+                                <div class="dropdown-item btn-submit" id="dropdown-item-suit-all">全種類</div>
                             </div>
                             <input id="input-suit" type="hidden" name="suit" value="" disabled>
                         </div>
@@ -112,9 +112,9 @@
                                 class="btn btn-lg btn-block btn-outline-info dropdown-toggle"
                                 data-toggle="dropdown">カード枚数</button>
                             <div class="dropdown-menu">
-                                <div class="dropdown-item" id="dropdown-item-max-card-num-3">3 以下のカードのみ</div>
-                                <div class="dropdown-item" id="dropdown-item-max-card-num-6">6 以下のカードのみ</div>
-                                <div class="dropdown-item" id="dropdown-item-max-card-num-9">9 以下のカードのみ</div>
+                                <div class="dropdown-item btn-submit" id="dropdown-item-max-card-num-3">3 以下のカードのみ</div>
+                                <div class="dropdown-item btn-submit" id="dropdown-item-max-card-num-6">6 以下のカードのみ</div>
+                                <div class="dropdown-item btn-submit" id="dropdown-item-max-card-num-9">9 以下のカードのみ</div>
                             </div>
                             <input id="input-max-card-num" type="hidden" name="max-card-num" value="" disabled>
                         </div>
@@ -123,15 +123,14 @@
                                 class="btn btn-lg btn-block btn-outline-info dropdown-toggle"
                                 data-toggle="dropdown">ライバルの強さ</button>
                             <div class="dropdown-menu">
-                                <div class="dropdown-item" id="dropdown-item-rival-strength-1">易しい</div>
-                                <div class="dropdown-item" id="dropdown-item-rival-strength-2">標準</div>
-                                <div class="dropdown-item" id="dropdown-item-rival-strength-3">難しい</div>
-                                <div class="dropdown-item" id="dropdown-item-rival-strength-4">マニュアル</div>
+                                <div class="dropdown-item btn-submit" id="dropdown-item-rival-strength-1">易しい</div>
+                                <div class="dropdown-item btn-submit" id="dropdown-item-rival-strength-2">標準</div>
+                                <div class="dropdown-item btn-submit" id="dropdown-item-rival-strength-3">難しい</div>
+                                <div class="dropdown-item btn-submit" id="dropdown-item-rival-strength-4">マニュアル</div>
                             </div>
                             <input id="input-rival-strength-level" type="hidden" name="rival-strength-level" value=""
                                 disabled>
                         </div>
-                        <button id="btn-apply-setting" type="submit" class="btn btn-info btn-lg btn-block">適用</button>
                         <a href="/memory_game.html" class="btn btn-dark btn-lg btn-block">リセット</a>
                     </form>
                 </div>
@@ -213,8 +212,8 @@
                     <button id="label-input-suit" class="btn btn-lg btn-block btn-outline-info dropdown-toggle"
                         data-toggle="dropdown">マーク</button>
                     <div class="dropdown-menu">
-                        <div class="dropdown-item" id="dropdown-item-suit-limited">スペード・ハートのみ</div>
-                        <div class="dropdown-item" id="dropdown-item-suit-all">全種類</div>
+                        <div class="dropdown-item btn-submit" id="dropdown-item-suit-limited">スペード・ハートのみ</div>
+                        <div class="dropdown-item btn-submit" id="dropdown-item-suit-all">全種類</div>
                     </div>
                     <input id="input-suit" type="hidden" name="suit" value="" disabled>
                 </div>
@@ -222,9 +221,9 @@
                     <button id="label-input-max-card-num" class="btn btn-lg btn-block btn-outline-info dropdown-toggle"
                         data-toggle="dropdown">カード枚数</button>
                     <div class="dropdown-menu">
-                        <div class="dropdown-item" id="dropdown-item-max-card-num-3">3 以下のカードのみ</div>
-                        <div class="dropdown-item" id="dropdown-item-max-card-num-6">6 以下のカードのみ</div>
-                        <div class="dropdown-item" id="dropdown-item-max-card-num-9">9 以下のカードのみ</div>
+                        <div class="dropdown-item btn-submit" id="dropdown-item-max-card-num-3">3 以下のカードのみ</div>
+                        <div class="dropdown-item btn-submit" id="dropdown-item-max-card-num-6">6 以下のカードのみ</div>
+                        <div class="dropdown-item btn-submit" id="dropdown-item-max-card-num-9">9 以下のカードのみ</div>
                     </div>
                     <input id="input-max-card-num" type="hidden" name="max-card-num" value="" disabled>
                 </div>
@@ -233,14 +232,13 @@
                         class="btn btn-lg btn-block btn-outline-info dropdown-toggle"
                         data-toggle="dropdown">ライバルの強さ</button>
                     <div class="dropdown-menu">
-                        <div class="dropdown-item" id="dropdown-item-rival-strength-1">易しい</div>
-                        <div class="dropdown-item" id="dropdown-item-rival-strength-2">標準</div>
-                        <div class="dropdown-item" id="dropdown-item-rival-strength-3">難しい</div>
-                        <div class="dropdown-item" id="dropdown-item-rival-strength-4">マニュアル</div>
+                        <div class="dropdown-item btn-submit" id="dropdown-item-rival-strength-1">易しい</div>
+                        <div class="dropdown-item btn-submit" id="dropdown-item-rival-strength-2">標準</div>
+                        <div class="dropdown-item btn-submit" id="dropdown-item-rival-strength-3">難しい</div>
+                        <div class="dropdown-item btn-submit" id="dropdown-item-rival-strength-4">マニュアル</div>
                     </div>
                     <input id="input-rival-strength-level" type="hidden" name="rival-strength-level" value="" disabled>
                 </div>
-                <button id="btn-apply-setting" type="submit" class="btn btn-info btn-lg btn-block">適用</button>
                 <a href="/memory_game.html" class="btn btn-dark btn-lg btn-block">リセット</a>
             </form>
         </div>
