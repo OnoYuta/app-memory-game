@@ -53,12 +53,14 @@
             this.startBtn = $('#btn-start-memory');
             this.applyBtn = $('#btn-apply-setting');
             this.dropdownToggle = $('.dropdown-toggle');
+            this.navDropdownToggle = $('.dropdown > a');
             this.rivalStrengthLevel = $('#rival-strength-level');
             this.submitBtn = $('.btn-submit');
             this.progressBars = {};
             this.numOfCards = {};
         }
         setCards(cards) {
+            cards = this.shuffle(cards);
             for (let i = 0; i < cards.length; i++) {
                 this.stage.append(cards[i].element);
             }
@@ -72,6 +74,16 @@
             $.each(this.numOfCards, function (index) {
                 display.numOfCards[index].setMax(cards.length);
             });
+        }
+        shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                let j = Math.floor(Math.random() * (i + 1));
+                let tmp = array[i];
+                array[i] = array[j];
+                array[j] = tmp;
+            }
+
+            return array;
         }
         setPalyerNames(playerNameLabelMap) {
             let playerNames = Object.keys(playerNameLabelMap);
@@ -113,6 +125,7 @@
             this.startBtn.off()
             this.startBtn.addClass('btn-dark');
             this.dropdownToggle.attr('disabled', true).addClass('disabled');
+            this.navDropdownToggle.attr('disabled', true).removeAttr('data-toggle');
         }
         activateNavFormBtn() {
             this.submitBtn.click(function () {
