@@ -56,6 +56,7 @@
             this.navDropdownToggle = $('.dropdown > a');
             this.rivalStrengthLevel = $('#rival-strength-level');
             this.submitBtn = $('.btn-submit');
+            this.modal = $('.modal');
             this.progressBars = {};
             this.numOfCards = {};
         }
@@ -110,13 +111,13 @@
             board.start();
 
             // ゲーム開始のモーダルを表示する
-            $('#modal-start').modal({
+            this.modal.modal({
                 backdrop: true,
                 keyboard: true,
                 show: true
             });
 
-            $('#modal-start').click(function () {
+            this.modal.click(function () {
                 $(this).modal('hide');
             });
 
@@ -239,6 +240,22 @@
         updateNumOfCard(index, value) {
             this.numOfCards[index].updateValue(value);
         }
+        showResultModally(winner) {
+            this.modal.find('.modal-title').html('勝者は' + winner.label + 'です！');
+            let detail = $("<div></div>").html(
+                "<p>" + winner.label + "の獲得枚数が全カード枚数の50%を上回りました。</p>" +
+                "<p>最終的な結果は、次のようになりました。</p>" +
+                "<ul>" +
+                "<li>あなた: " + this.progressBars["あなた"].value + "枚 (" + this.progressBars["あなた"].progress + " % ）</li>" +
+                "<li>ライバル: " + this.progressBars["ライバル"].value + "枚 (" + this.progressBars["ライバル"].progress + " % ）</li>" +
+                "</ul>"
+            );
+            this.modal.find('.modal-body').html(detail);
+
+            this.modal.modal('show').off().click(function () {
+                window.location.href = '/memory_game.html';
+            });
+        }
     }
 
     /**
@@ -251,6 +268,9 @@
             this.max = 0;
             this.element = element;
         }
+        get progress() {
+            return Math.round((this.value / this.max) * 100);
+        }
         updateValue(value) {
             this.value = value;
             this.updateElement();
@@ -259,10 +279,9 @@
             this.max = max;
         }
         updateElement() {
-            let progress = Math.round((this.value / this.max) * 100);
-            this.element.html(this.label + ' ' + progress + '%').attr({
-                'style': 'width: ' + progress + '%',
-                'aria-valuenow': progress,
+            this.element.html(this.label + ' ' + this.progress + '%').attr({
+                'style': 'width: ' + this.progress + '%',
+                'aria-valuenow': this.progress,
             });
         }
     }
@@ -307,6 +326,8 @@
             this.selectedCards = [];
             this.config = config
             this.display = display;
+            this.totalCards = 0;
+            this.winner = null;
         }
         get activePlayer() {
             return this.players[this.activePlayerIndex];
@@ -347,6 +368,7 @@
                 }
             });
             this.cards.push(card);
+            this.totalCards++;
         }
         setPalyers(playerNameLabelMap, strength) {
             let playerNames = Object.keys(playerNameLabelMap);
@@ -397,6 +419,9 @@
             // 既に2枚選んでいるときはクリックしても何も起こらない
             if (this.selectedCards.length >= this.config.selectableNum) return false;
 
+            // 勝者が決まっているときは何も起こらない
+            if (this.winner) return false;
+
             return true;
         }
         /**
@@ -411,6 +436,9 @@
                 this.moveOnNextTurn();
             }
             this.updateDisplay();
+            if (this.judge()) {
+                this.end(this.judge());
+            }
         }
         /**
          * 選んだカードの番号が一致していればtrueを返す
@@ -502,6 +530,10 @@
          * @param Board board 
          */
         repeatAutoCardSelectionAsNpc(board) {
+
+            // 勝者が決まっているときは何も起こらない
+            if (this.winner) return false;
+
             let selectedCardsNum = board.selectedCards.length;
             let sameNumberCards = board.activePlayer.findSameNumberCardsInMemory();
 
@@ -588,6 +620,27 @@
         start() {
             this.activePlayerIndex = 0;
             this.display.startBtn.html(this.activePlayer.label + 'のターン');
+        }
+        /**
+         * 全カード枚数の半数以上を獲得したプレイヤがいれば返す
+         */
+        judge() {
+            let criteria = this.totalCards / 2;
+
+            for (let i = 0; i < this.players.length; i++) {
+                if (this.players[i].cards.length >= criteria) {
+                    return this.players[i];
+                }
+            }
+
+            return false;
+        }
+        /**
+         * 
+         */
+        end(player) {
+            this.winner = player;
+            this.display.showResultModally(player);
         }
     }
 
