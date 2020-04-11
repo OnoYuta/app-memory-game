@@ -2,8 +2,7 @@
 <html lang="ja">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>メモリーゲーム</title>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
@@ -68,25 +67,129 @@
                 <div class="py-3">
                     <h2>ゲーム開始</h2>
                     <div class="modal fade" id="modal">
-                        <div class="modal-dialog">
+                        <div class="modal-dialog modal-lg">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h3 class="modal-title">ゲームが始まりました！</h3>
-                                    <button class="close" data-dismiss="modal">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col">
+                                                <h3 class="modal-title">メモリーゲームへようこそ</h3>
+                                            </div>
+                                            <div class="col">
+                                                <button class="close" data-dismiss="modal">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="modal-body">
-                                    <p>メモリーゲームの遊び方</p>
-                                    <ol>
-                                        <li>カードをクリックしてめくってみてください</li>
-                                        <li>2枚のカードをめくって表面の数字を比較します</li>
-                                        <ul>
-                                            <li>2つの数字が一致すればカードを獲得します</li>
-                                            <li>数字が一致しなければ対戦相手のターンに移ります</li>
-                                        </ul>
-                                        <li>さきに全カードの50%を獲得したプレイヤの勝利です</li>
-                                    </ol>
+                                    <div class="container">
+                                        <h4>チュートリアル</h4>
+                                    </div>
+                                    <div class="container-fluid">
+                                        <div id="carouselTutorialIndicators" class="carousel slide"
+                                            data-ride="carousel">
+                                            <ol class="carousel-indicators">
+                                                <li data-target="#carouselTutorialIndicators" data-slide-to="0"
+                                                    class="active"></li>
+                                                <li data-target="#carouselTutorialIndicators" data-slide-to="1"></li>
+                                                <li data-target="#carouselTutorialIndicators" data-slide-to="2"></li>
+                                                <li data-target="#carouselTutorialIndicators" data-slide-to="3"></li>
+                                                <li data-target="#carouselTutorialIndicators" data-slide-to="4"></li>
+                                            </ol>
+                                            <div class="carousel-inner bg-dark text-white">
+                                                <div class="carousel-item active">
+                                                    <p>カードをクリックしてみてください</p>
+                                                </div>
+                                                <div class="carousel-item">
+                                                    <p>このようにクリックしたカードは表になります</p>
+                                                </div>
+                                                <div class="carousel-item">
+                                                    <p>2枚のカードを表にして<br>同じ数字が出ればカードを獲得できます</p>
+                                                </div>
+                                                <div class="carousel-item">
+                                                    <p>違う数字が出ればカードを裏返して<br>次のプレイヤのターンに移ります</p>
+                                                </div>
+                                                <div class="carousel-item">
+                                                    <p>相手よりも先に全カード枚数の50%以上を<br>獲得したプレイヤの勝利です</p>
+                                                </div>
+                                            </div>
+                                            <a class="carousel-control-prev align-middle"
+                                                href="#carouselTutorialIndicators" role="button" data-slide="prev">
+                                                前へ
+                                            </a>
+                                            <a class="carousel-control-next" href="#carouselTutorialIndicators"
+                                                role="button" data-slide="next">
+                                                次へ
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="container">
+                                        <h4>ライバルの強さについて</h4>
+                                    </div>
+                                    <div class="container-fluid">
+                                        <div id="carouselRivalIndicators" class="carousel slide" data-ride="carousel">
+                                            <ol class="carousel-indicators">
+                                                <li data-target="#carouselRivalIndicators" data-slide-to="0"
+                                                    class="active"></li>
+                                                <li data-target="#carouselRivalIndicators" data-slide-to="1">
+                                                </li>
+                                                <li data-target="#carouselRivalIndicators" data-slide-to="2">
+                                                </li>
+                                                <li data-target="#carouselRivalIndicators" data-slide-to="3">
+                                                </li>
+                                                <li data-target="#carouselRivalIndicators" data-slide-to="4">
+                                                </li>
+                                                <li data-target="#carouselRivalIndicators" data-slide-to="5">
+                                                </li>
+                                                <li data-target="#carouselRivalIndicators" data-slide-to="6">
+                                                </li>
+                                                <li data-target="#carouselRivalIndicators" data-slide-to="7">
+                                                </li>
+                                            </ol>
+                                            <div class="carousel-inner bg-dark text-white">
+                                                <div class="carousel-item active">
+                                                    <p>ライバルもあらかじめカードの配置を<br>知っているわけではありません</p>
+                                                </div>
+                                                <div class="carousel-item">
+                                                    <p>誰かがカードを表にしたときに<br>カードの配置を記憶しています</p>
+                                                </div>
+                                                <div class="carousel-item">
+                                                    <p>そして自分のターンになると<br>同じ数字の組み合わせを記憶から探します</p>
+                                                </div>
+                                                <div class="carousel-item">
+                                                    <p>ライバルといえど記憶できる<br>カードの枚数には限界があります</p>
+                                                </div>
+                                                <div class="carousel-item">
+                                                    <p>記憶容量が限界に達すると<br>覚えたカードを少しずつ忘れていきます</p>
+                                                </div>
+                                                <div class="carousel-item">
+                                                    <p>どのカードを忘れるかはランダムですが<br>序盤に覚えたカードほど忘れやすいようです</p>
+                                                </div>
+                                                <div class="carousel-item">
+                                                    <p>どれを選べばよいかわからないときは<br>ライバルもランダムにカードをめくります</p>
+                                                </div>
+                                                <div class="carousel-item">
+                                                    <p>その場合も2枚目を選ぶときは<br>同じ数字のカードを覚えていないか確認します</p>
+                                                </div>
+                                            </div>
+                                            <a class="carousel-control-prev align-middle"
+                                                href="#carouselRivalIndicators" role="button" data-slide="prev">
+                                                前へ
+                                            </a>
+                                            <a class="carousel-control-next" href="#carouselRivalIndicators"
+                                                role="button" data-slide="next">
+                                                次へ
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <div class="container text-right">
+                                        <button type="button" class="btn btn-info" data-dismiss="modal">閉じる</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
