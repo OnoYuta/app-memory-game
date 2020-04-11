@@ -244,7 +244,6 @@
             this.modal.find('.modal-title').html('勝者は' + winner.label + 'です！');
             let detail = $("<div></div>").html(
                 "<p>" + winner.label + "の獲得枚数が全カード枚数の50%を上回りました。</p>" +
-                "<p>最終的な結果は、次のようになりました。</p>" +
                 "<ul>" +
                 "<li>あなた: " + this.progressBars["あなた"].value + "枚 (" + this.progressBars["あなた"].progress + " % ）</li>" +
                 "<li>ライバル: " + this.progressBars["ライバル"].value + "枚 (" + this.progressBars["ライバル"].progress + " % ）</li>" +
