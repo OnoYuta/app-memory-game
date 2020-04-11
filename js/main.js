@@ -117,14 +117,10 @@
                 show: true
             });
 
-            this.modal.click(function () {
-                $(this).modal('hide');
-            });
-
             this.stage.off();
             this.submitBtn.off();
             this.startBtn.off()
-            this.startBtn.addClass('btn-dark');
+            this.startBtn.addClass('active');
             this.dropdownToggle.attr('disabled', true).addClass('disabled');
             this.navDropdownToggle.attr('disabled', true).removeAttr('data-toggle');
         }
@@ -825,6 +821,11 @@
      * ゲーム開始に必要な準備をする
      */
     function init() {
+
+        window.addEventListener("load", function () {
+            $('[data-toggle="popover"]').popover();
+        });
+
         let config = new Config();
         config.getRequest();
 

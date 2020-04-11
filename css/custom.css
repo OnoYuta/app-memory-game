@@ -7011,6 +7011,11 @@ button:disabled {
   border-color: #bee5eb;
   color: #0c5460; }
 
+.carousel-item{
+  text-align: center;
+  height: 100px;
+}
+
 @media screen and (max-width: 720px) {
   .container {
     min-width: 480px; }
