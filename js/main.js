@@ -121,7 +121,7 @@
             this.stage.off();
             this.submitBtn.off();
             this.startBtn.off()
-            this.startBtn.addClass('active');
+            this.startBtn.addClass('active').toggleClass('rotate-y');
             this.dropdownToggle.attr('disabled', true).addClass('disabled');
             this.navDropdownToggle.attr('disabled', true).removeAttr('data-toggle');
         }
@@ -503,7 +503,7 @@
             } else {
                 this.activePlayerIndex = 0;
             }
-            this.display.startBtn.html(this.activePlayer.label + 'のターン');
+            this.display.startBtn.html(this.activePlayer.label + 'のターン').toggleClass('rotate-y');
 
             // ターン表示を更新する
             $('#toast-turn-who').text(this.players[this.activePlayerIndex].label);
@@ -620,12 +620,37 @@
 
                     card.addClass('card-open');
 
+                    if (card.hasClass('card-memory')) {
+                        card.popover({
+                            trigger: 'hover',
+                            content: 'このカードの位置と<br>数字を記憶しました',
+                            html: true,
+                        }).popover('show');
+                    }
+
                     if (card.hasClass('card-close-auto')) {
                         setTimeout(function () {
                             card.removeClass('card-open');
                         }, 1500);
                         return;
                     }
+
+                    if (card.hasClass('card-get') && $('.card-get' + '.card-open').length === 2) {
+                        card.popover({
+                            trigger: 'hover',
+                            content: '2枚の数字が一致したので<br>カードを獲得します',
+                            html: true,
+                        }).popover('show');
+                    }
+
+                    if (card.hasClass('card-get-failure') && $('.card-get-failure' + '.card-open').length === 2) {
+                        card.popover({
+                            trigger: 'hover',
+                            content: '数字が一致しなかったので<br>次のプレイヤのターンに移ります',
+                            html: true,
+                        }).popover('show');
+                    }
+
 
                     if (card.hasClass('card-not-close')) return;
 
@@ -882,6 +907,10 @@
         $.each(config.playerNameLabelMap, function () {
             display.updateProgressBar(this, 0);
             display.updateNumOfCard(this, 0);
+        });
+
+        window.addEventListener("load", function () {
+            $('[data-toggle="popover"]').popover();
         });
 
         display.activateStartBtn(board);
