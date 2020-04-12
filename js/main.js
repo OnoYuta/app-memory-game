@@ -238,6 +238,29 @@
         updateNumOfCard(index, value) {
             this.numOfCards[index].updateValue(value);
         }
+        updateRivalStrengthLevel(strength) {
+            let label;
+
+            switch (strength) {
+                case 1:
+                    label = '易しい';
+                    break;
+                case 2:
+                    label = '標準';
+                    break;
+                case 3:
+                    label = '難しい';
+                    break;
+                case 4:
+                    label = 'マニュアル';
+                    break;
+                default:
+                    label = '標準';
+                    break;
+            }
+
+            this.rivalStrengthLevel.html(label);
+        }
         showResultModally(winner) {
             this.modalResult.find('.modal-title').html(winner.label + 'の勝利です！');
             $("#your-numcards").html(this.progressBars["あなた"].value + '枚');
@@ -907,6 +930,7 @@
         display.setCards(board.cards);
         board.activateCards(display.sampleCards);
 
+        display.updateRivalStrengthLevel(config.rivalStrengthLevel);
         $.each(config.playerNameLabelMap, function () {
             display.updateProgressBar(this, 0);
             display.updateNumOfCard(this, 0);
