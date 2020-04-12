@@ -547,7 +547,7 @@
             // NPCがカードを獲得したときはアクションが完了するように2秒待つ
             console.log(board.selectedCards.length + '枚のカードを選んでいます');
 
-            board.selectCard(board.activePlayer.selectCardAtRandom(board.cards));
+            board.selectCard(board.activePlayer.selectCardAtRandom(board.cards, board.selectedCards));
             selectedCardsNum = board.selectedCards.length;
             console.log(board.selectedCards.length + '枚のカードを選んでいます');
 
@@ -771,14 +771,14 @@
         getMemoryCapacity(strength) {
             switch (strength) {
                 case 1:
-                    return 3;
+                    return 1;
                 case 2:
-                    return 5;
+                    return 3;
                 case 3:
-                    return 7;
+                    return 5;
             }
 
-            return 5;
+            return 3;
         }
         /**
          * 表になったカードを記憶する
@@ -873,9 +873,19 @@
          * ランダムにカードを選択する
          * @param Array cards 
          */
-        selectCardAtRandom(cards) {
+        selectCardAtRandom(cards, selectedCards) {
             console.log('ランダムに選ぶ');
-            return cards[Math.floor(Math.random() * cards.length)];
+            let card = cards[Math.floor(Math.random() * cards.length)];
+
+            if (selectedCards.length === 0) {
+                return card;
+            }
+
+            while (card === selectedCards[0]) {
+                card = cards[Math.floor(Math.random() * cards.length)];
+            }
+
+            return card;
         }
     }
 
