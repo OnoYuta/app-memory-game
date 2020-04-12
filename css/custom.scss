@@ -79,27 +79,29 @@ button:disabled{
   background-size: 80%; }
 
 #btn-start-memory {
-  color:white;}
+    color: white;
+    transition: 0.8s; }
+
+.rotate-y{
+  transform: rotateY(360deg); }
 
 #toast-turn {
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 1;}
+  z-index: 1; }
 
 .toast-info {
   background-color: #d1ecf1;
   border-color: #bee5eb;
-  color: #0c5460;}
+  color: #0c5460; }
 
 .carousel-item{
   text-align: center;
-  height: 240px;
-}
+  height: 240px; }
 
 .carousel-indicators li {
-  background-color: #343a40;
-}
+  background-color: #343a40; }
 
 .card-sample.card-wrapper {
   width: 100%;

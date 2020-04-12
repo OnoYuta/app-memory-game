@@ -6998,7 +6998,11 @@ button:disabled {
   background-size: 80%; }
 
 #btn-start-memory {
-  color: white; }
+  color: white;
+  transition: 0.8s; }
+
+.rotate-y {
+  transform: rotateY(360deg); }
 
 #toast-turn {
   position: absolute;
