@@ -7,8 +7,6 @@
     <title>メモリーゲーム</title>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
         integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link href="css/custom.css" rel="stylesheet">
 </head>
 
@@ -502,7 +500,7 @@
                             <input id="input-rival-strength-level" type="hidden" name="rival-strength-level" value=""
                                 disabled>
                         </div>
-                        <a href="/memory_game.html" class="btn btn-dark btn-lg btn-block">リセット</a>
+                        <a href="index.html" class="btn btn-dark btn-lg btn-block">リセット</a>
                     </form>
                 </div>
                 <div id="toast-turn" class="toast toast-turn" data-delay="4000" role="alert" aria-live="assertive"
@@ -531,10 +529,10 @@
             <h2 id="progress">プログレス</h2>
             <p>各プレイヤが獲得したカード枚数が全体に占める割合をグラフで表示します</p>
             <div class="progress" style="height: 24px;">
-                <div id="progress-bar1" class="progress-bar bg-info" role="progressbar" style="width: 15%"
-                    aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">あなた 15%</div>
-                <div id="progress-bar2" class="progress-bar bg-dark" role="progressbar" style="width: 30%"
-                    aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">ライバル 30%</div>
+                <div id="progress-bar1" class="progress-bar bg-info" role="progressbar" style="width: 0%"
+                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                <div id="progress-bar2" class="progress-bar bg-dark" role="progressbar" style="width: 0%"
+                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
         </div>
         <!-- setting-cards -->
@@ -610,7 +608,7 @@
                     </div>
                     <input id="input-rival-strength-level" type="hidden" name="rival-strength-level" value="" disabled>
                 </div>
-                <a href="/memory_game.html" class="btn btn-dark btn-lg btn-block">リセット</a>
+                <a href="index.html" class="btn btn-dark btn-lg btn-block">リセット</a>
             </form>
         </div>
     </div>

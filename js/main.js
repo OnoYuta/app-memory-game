@@ -275,6 +275,7 @@
             this.max = max;
         }
         updateElement() {
+            if (this.progress === 0) return;
             this.element.html(this.label + ' ' + this.progress + '%').attr({
                 'style': 'width: ' + this.progress + '%',
                 'aria-valuenow': this.progress,
