@@ -52,10 +52,12 @@ button:disabled{
 .card-front {
   background: #f8f9fa;
   color: #fff;
-  transform: rotateY(180deg); }
+  transform: rotateY(180deg); 
+  -webkit-transform: rotateY(180deg); }
 
 .card-body.card-open {
-  transform: rotateY(180deg); }
+  transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg); }
 
 .suit-heart {
   background-image: url(../svg/heart.svg);
