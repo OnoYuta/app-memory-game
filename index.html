@@ -52,7 +52,7 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item"><a href="#" class="nav-link">別のプロジェクト</a></li>
+                    <li class="nav-item"><a href="https://github.com/OnoYuta" class="nav-link">別のプロジェクト</a></li>
                 </ul>
             </div>
         </div>
@@ -63,7 +63,7 @@
             <div class="col-lg-4">
                 <div class="py-3">
                     <h2>ゲーム開始</h2>
-                    <div class="modal fade" id="modal">
+                    <div class="modal fade" id="modal-start">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -455,6 +455,67 @@
                                 <div class="modal-footer">
                                     <div class="container text-right">
                                         <button type="button" class="btn btn-info" data-dismiss="modal">閉じる</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="modal-result">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col">
+                                                <h3 class="modal-title">あなたの勝利です！</h3>
+                                            </div>
+                                            <div class="col">
+                                                <button class="close alert-light">
+                                                    <a href="index.html" class="alert-link"><span
+                                                            aria-hidden="true">&times;</span></a>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="container-fluid">
+                                        <div class="row py-3">
+                                            <div class="col-10 offset-1 pt-3">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">プレイヤ</th>
+                                                            <th scope="col">枚数</th>
+                                                            <th scope="col">割合</th>
+                                                            <th scope="col">強さ</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <th scope="row">あなた</th>
+                                                            <td id="your-numcards">8枚</td>
+                                                            <td id="your-progress">14%</td>
+                                                            <td>マニュアル</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">ライバル</th>
+                                                            <td id="rival-numcards">14枚</td>
+                                                            <td id="rival-progress">54%</td>
+                                                            <td id="rival-strength">標準</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <div class="progress" style="height: 24px;" id="progress-result">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="modal-footer">
+                                    <div class="container text-right">
+                                        <a href="index.html" class="btn btn-info">リセット</a>
                                     </div>
                                 </div>
                             </div>

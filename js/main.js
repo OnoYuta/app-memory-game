@@ -56,7 +56,8 @@
             this.navDropdownToggle = $('.dropdown > a');
             this.rivalStrengthLevel = $('#rival-strength-level');
             this.submitBtn = $('.btn-submit');
-            this.modal = $('.modal');
+            this.modal = $('#modal-start');
+            this.modalResult = $('#modal-result');
             this.sampleCards = $('.card-sample>.card-body');
             this.progressBars = {};
             this.numOfCards = {};
@@ -238,19 +239,22 @@
             this.numOfCards[index].updateValue(value);
         }
         showResultModally(winner) {
-            this.modal.find('.modal-title').html('勝者は' + winner.label + 'です！');
-            let detail = $("<div></div>").html(
-                "<p>" + winner.label + "の獲得枚数が全カード枚数の50%を上回りました。</p>" +
-                "<ul>" +
-                "<li>あなた: " + this.progressBars["あなた"].value + "枚 (" + this.progressBars["あなた"].progress + " % ）</li>" +
-                "<li>ライバル: " + this.progressBars["ライバル"].value + "枚 (" + this.progressBars["ライバル"].progress + " % ）</li>" +
-                "</ul>"
-            );
-            this.modal.find('.modal-body').html(detail);
+            this.modalResult.find('.modal-title').html(winner.label + 'の勝利です！');
+            $("#your-numcards").html(this.progressBars["あなた"].value + '枚');
+            $("#your-progress").html(this.progressBars["あなた"].progress + '%');
+            $("#rival-numcards").html(this.progressBars["ライバル"].value + '枚');
+            $("#rival-progress").html(this.progressBars["ライバル"].progress + '%');
 
-            this.modal.modal('show').off().click(function () {
-                window.location.href = '/memory_game.html';
-            });
+            if ($("#label-input-rival-strength-level").html() === 'ライバルの強さ') {
+                $("#rival-strength").html('標準');
+            } else {
+                $("#rival-strength").html($("#label-input-rival-strength-level").html());
+            }
+
+            this.modalResult.find('#progress-result').append(this.progressBars["あなた"].element.clone());
+            this.modalResult.find('#progress-result').append(this.progressBars["ライバル"].element.clone());
+
+            this.modalResult.modal('show');
         }
     }
 
