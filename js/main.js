@@ -521,7 +521,6 @@
             if (this.activePlayer.constructor === Npc) {
                 let board = this;
                 setTimeout(function () {
-                    console.log('2秒まちました');
                     board.repeatAutoCardSelectionAsNpc(board);
                 }, 2000);
             }
@@ -545,35 +544,26 @@
             }
 
             // NPCがカードを獲得したときはアクションが完了するように2秒待つ
-            console.log(board.selectedCards.length + '枚のカードを選んでいます');
 
             board.selectCard(board.activePlayer.selectCardAtRandom(board.cards, board.selectedCards));
             selectedCardsNum = board.selectedCards.length;
-            console.log(board.selectedCards.length + '枚のカードを選んでいます');
 
             switch (selectedCardsNum) {
                 case board.config.selectableNum: // 間違えたとき
-                    console.log('間違えたので帰ります');
                     return;
                 case 0: // 数字が一致したとき
                     setTimeout(function () {
-                        console.log('2秒まちました');
                         board.repeatAutoCardSelectionAsNpc(board);
                     }, 2000);
                     break;
                 default: // これから2枚目を選択するとき
                     setTimeout(function () {
-                        console.log('1秒まちました');
                         let sameNuberCard = board.activePlayer.findSameNumberCardWithLastMemorized();
-                        console.log('次の出力がsameNuberCard');
-                        console.log(sameNuberCard);
                         if (sameNuberCard === -1) {
                             board.repeatAutoCardSelectionAsNpc(board);
                         } else {
-                            console.log('どこかでみたかも');
                             board.selectCard(sameNuberCard);
                             setTimeout(function () {
-                                console.log('2秒まちました');
                                 board.repeatAutoCardSelectionAsNpc(board);
                             }, 2000);
                         }
@@ -586,7 +576,6 @@
          * @param array sameNumberCards 
          */
         selectSameNumberCardsAsNpc(board, sameNumberCards) {
-            console.log('それ知ってる！');
             let card = sameNumberCards.shift();
             board.selectCard(card);
 
@@ -874,7 +863,6 @@
          * @param Array cards 
          */
         selectCardAtRandom(cards, selectedCards) {
-            console.log('ランダムに選ぶ');
             let card = cards[Math.floor(Math.random() * cards.length)];
 
             if (selectedCards.length === 0) {
