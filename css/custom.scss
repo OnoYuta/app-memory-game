@@ -11,6 +11,7 @@ button:disabled{
 
 .card-wrapper {
   perspective: 100px;
+  -webkit-perspective: 100px;
   /* 奥行きを指定 */
   width: 100%;
   height: 8em;
@@ -25,6 +26,7 @@ button:disabled{
   position: relative;
   /* 絶対配置の基準とする */
   transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
   /* 子要素を同じ3D空間に配置 */ }
 
 .card-front,
@@ -39,6 +41,7 @@ button:disabled{
   top: 0;
   left: 0;
   backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   /* 回転中裏面を見せない */
   box-shadow: 0 5px 0 rgba(0, 0, 0, 0.2); }
 
@@ -123,8 +126,53 @@ button:disabled{
   font-size: 4em; }
 
 @media screen and (max-width: 720px) {
-  .container{
-    min-width: 480px;} 
-  .footer{
-    min-width: 480px;} 
-}
+
+  .container {
+    min-width: 320px; }
+
+  .footer {
+    min-width: 320px; }
+
+  body{
+    line-height: 2; }
+
+  h1{
+    font-size: 2rem; }
+
+  h2 {
+    font-size: 1.5rem; }
+
+  h3 {
+    font-size: 1.2rem; }
+
+  p, div {
+    font-size: 0.8rem; }
+
+  .carousel-item p {
+    font-size: 0.5rem; }
+
+  .progress-bar {
+    font-size: 0.5rem; }
+
+  .card-wrapper {
+    height: 5.28em; }
+
+  .card-wrapper .card-body {
+    width: 3.3em;
+    height: 5.28em; }
+
+  .card-front,
+
+  .card-back {
+    width: 3.3em;
+    height: 5.28em;
+    line-height: 5.28em;
+    border-radius: 5.28px;
+    box-shadow: 0 5px 0 rgba(0, 0, 0, 0.2); }
+
+  .carousel-item {
+    height: 200px; }
+
+  .large-icon {
+    text-align: center;
+    font-size: 3em; } }
