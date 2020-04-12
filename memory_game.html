@@ -99,11 +99,13 @@
                                             </ol>
                                             <div class="carousel-inner">
                                                 <div class="carousel-item active">
-                                                    <p class="py-3 h-25">カードをクリックしてみてください<br>このようにクリックしたカードは表になります</p>
+                                                    <p class="py-3 h-25">カードをクリックしてみてください</p>
                                                     <div class="row py-3">
                                                         <div class="col">
                                                             <div class="card-wrapper card-sample click-action">
-                                                                <div class="card-body card-close-auto">
+                                                                <div class="card-body card-close-auto"
+                                                                    data-toggle="popover" data-content="クリックしたカードは反転します"
+                                                                    data-trigger="hover">
                                                                     <div class="card-front suit-spade">4</div>
                                                                     <div class="card-back">CARD</div>
                                                                 </div>
@@ -116,7 +118,7 @@
                                                     <div class="row py-3">
                                                         <div class="col-2 offset-4">
                                                             <div class="card-wrapper card-sample">
-                                                                <div class="card-body card-not-close">
+                                                                <div class="card-body card-get card-not-close">
                                                                     <div class="card-front suit-diam">6</div>
                                                                     <div class="card-back">CARD</div>
                                                                 </div>
@@ -124,7 +126,7 @@
                                                         </div>
                                                         <div class="col-2">
                                                             <div class="card-wrapper card-sample">
-                                                                <div class="card-body card-not-close">
+                                                                <div class="card-body card-get card-not-close">
                                                                     <div class="card-front suit-club">6</div>
                                                                     <div class="card-back">CARD</div>
                                                                 </div>
@@ -137,7 +139,7 @@
                                                     <div class="row py-3">
                                                         <div class="col-2 offset-4">
                                                             <div class="card-wrapper card-sample">
-                                                                <div class="card-body">
+                                                                <div class="card-body card-get-failure">
                                                                     <div class="card-front suit-heart">8</div>
                                                                     <div class="card-back">CARD</div>
                                                                 </div>
@@ -145,7 +147,7 @@
                                                         </div>
                                                         <div class="col-2">
                                                             <div class="card-wrapper card-sample">
-                                                                <div class="card-body">
+                                                                <div class="card-body card-get-failure">
                                                                     <div class="card-front suit-spade">2</div>
                                                                     <div class="card-back">CARD</div>
                                                                 </div>
@@ -157,7 +159,9 @@
                                                     <p class="py-3 h-25">相手よりも先に全カード枚数の50%以上を<br>獲得したプレイヤの勝利です</p>
                                                     <div class="row py-3">
                                                         <div class="col-10 offset-1 pt-3">
-                                                            <div class="progress" style="height: 24px;">
+                                                            <div class="progress" style="height: 24px;"
+                                                                data-toggle="popover" data-placement="bottom"
+                                                                data-content="この試合はあなたの勝利です" data-trigger="hover">
                                                                 <div class="progress-bar bg-info" role="progressbar"
                                                                     style="width: 56%" aria-valuenow="56"
                                                                     aria-valuemin="0" aria-valuemax="100">あなた 56%</div>
@@ -165,6 +169,7 @@
                                                                     style="width: 24%" aria-valuenow="24"
                                                                     aria-valuemin="0" aria-valuemax="100">ライバル 24%</div>
                                                             </div>
+                                                            <p><span class="small">※このグラフはカード下部に常に表示されます</span></p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -182,7 +187,9 @@
                                     <hr>
                                     <div class="container">
                                         <h4>NPCの強さについて</h4>
-                                        <p class='text-muted'>ノンプレイヤキャラクタのカード選択<span class="small"> ※自動制御の対戦相手</span>
+                                        <p class='text-muted'>
+                                            ノンプレイヤキャラクタのカード選択
+                                            <span class="small"> ※自動制御の対戦相手</span>
                                         </p>
                                     </div>
                                     <div class="container-fluid">
@@ -210,16 +217,17 @@
                                                     <p class="py-3 h-25">NPCもあらかじめカードの配置を<br>知っているわけではありません</p>
                                                     <div class="row py-3">
                                                         <div class="col">
-                                                            <i class="fas fa-question large-icon"></i>
+                                                            <i class="fas fa-question large-icon" data-toggle="popover"
+                                                                data-content="どこに何があるか知りません" data-trigger="hover"></i>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="carousel-item">
-                                                    <p class="py-3 h-25">誰かがカードを表にしたときに<br>カードの配置を記憶しています</p>
+                                                    <p class="py-3 h-25">誰かがカードを表にしたときに<br>NPCはカードの配置を記憶します</p>
                                                     <div class="row py-3">
                                                         <div class="col">
                                                             <div class="card-wrapper card-sample">
-                                                                <div class="card-body card-close-auto">
+                                                                <div class="card-body card-close-auto card-memory">
                                                                     <div class="card-front suit-spade">4</div>
                                                                     <div class="card-back">CARD</div>
                                                                 </div>
@@ -228,11 +236,13 @@
                                                     </div>
                                                 </div>
                                                 <div class="carousel-item">
-                                                    <p class="py-3 h-25">そして自分のターンになると<br>同じ数字の組み合わせを記憶から探します</p>
+                                                    <p class="py-3 h-25">そして自分のターンになると<br>数字が一致するようにカードを選びます</p>
                                                     <div class="row py-3">
                                                         <div class="col-2 offset-2">
                                                             <div class="card-wrapper card-sample">
-                                                                <div class="card-body">
+                                                                <div class="card-body" data-toggle="popover"
+                                                                    data-content="このカードを選んでも<br>ペアは作れません"
+                                                                    data-trigger="hover" data-html="true">
                                                                     <div class="card-front suit-diam">7</div>
                                                                     <div class="card-back">CARD</div>
                                                                 </div>
@@ -240,7 +250,10 @@
                                                         </div>
                                                         <div class="col-2">
                                                             <div class="card-wrapper card-sample">
-                                                                <div class="card-body card-not-close">
+                                                                <div class="card-body card-not-close"
+                                                                    data-toggle="popover"
+                                                                    data-content="中央の2枚のカードなら<br>ペアを作ることができます"
+                                                                    data-trigger="hover" data-html="true">
                                                                     <div class="card-front suit-club">8</div>
                                                                     <div class="card-back">CARD</div>
                                                                 </div>
@@ -248,7 +261,10 @@
                                                         </div>
                                                         <div class="col-2">
                                                             <div class="card-wrapper card-sample">
-                                                                <div class="card-body card-not-close">
+                                                                <div class="card-body card-not-close"
+                                                                    data-toggle="popover"
+                                                                    data-content="中央の2枚のカードなら<br>ペアを作ることができます"
+                                                                    data-trigger="hover" data-html="true">
                                                                     <div class="card-front suit-spade">8</div>
                                                                     <div class="card-back">CARD</div>
                                                                 </div>
@@ -256,7 +272,9 @@
                                                         </div>
                                                         <div class="col-2">
                                                             <div class="card-wrapper card-sample">
-                                                                <div class="card-body">
+                                                                <div class="card-body" data-toggle="popover"
+                                                                    data-content="このカードを選んでも<br>ペアは作れません"
+                                                                    data-trigger="hover" data-html="true">
                                                                     <div class="card-front suit-heart">3</div>
                                                                     <div class="card-back">CARD</div>
                                                                 </div>
@@ -268,7 +286,10 @@
                                                     <p class="py-3 h-25">しかしNPCといえど記憶できる<br>カードの枚数には限界があります</p>
                                                     <div class="row py-3">
                                                         <div class="col">
-                                                            <i class="fas fa-brain large-icon"></i>
+                                                            <i class="fas fa-brain large-icon" data-toggle="popover"
+                                                                data-html="true"
+                                                                data-content="NPCが記憶できる枚数の上限は<br>設定した`ライバルの強さ`で決まります"
+                                                                data-trigger="hover"></i>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -277,7 +298,9 @@
                                                     <div class="row py-3">
                                                         <div class="col-2 offset-2">
                                                             <div class="card-wrapper card-sample">
-                                                                <div class="card-body card-not-open">
+                                                                <div class="card-body card-close-auto"
+                                                                    data-toggle="popover" data-content="このカードは忘れてしまいました"
+                                                                    data-trigger="hover" data-html="true">
                                                                     <div class="card-front suit-diam">7</div>
                                                                     <div class="card-back">CARD</div>
                                                                 </div>
@@ -285,7 +308,9 @@
                                                         </div>
                                                         <div class="col-2">
                                                             <div class="card-wrapper card-sample">
-                                                                <div class="card-body card-not-open">
+                                                                <div class="card-body card-close-auto"
+                                                                    data-toggle="popover" data-content="このカードはクラブの8です"
+                                                                    data-trigger="hover" data-html="true">
                                                                     <div class="card-front suit-club">8</div>
                                                                     <div class="card-back">CARD</div>
                                                                 </div>
@@ -293,15 +318,19 @@
                                                         </div>
                                                         <div class="col-2">
                                                             <div class="card-wrapper card-sample">
-                                                                <div class="card-body card-not-open">
-                                                                    <div class="card-front suit-spade">8</div>
+                                                                <div class="card-body card-close-auto"
+                                                                    data-toggle="popover" data-content="このカードは忘れてしまいました"
+                                                                    data-trigger="hover" data-html="true">
+                                                                    <div class="card-front suit-spade">2</div>
                                                                     <div class="card-back">CARD</div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="col-2">
                                                             <div class="card-wrapper card-sample">
-                                                                <div class="card-body card-not-open">
+                                                                <div class="card-body card-close-auto"
+                                                                    data-toggle="popover" data-content="このカードはハートの3です"
+                                                                    data-trigger="hover" data-html="true">
                                                                     <div class="card-front suit-heart">3</div>
                                                                     <div class="card-back">CARD</div>
                                                                 </div>
@@ -314,25 +343,55 @@
                                                     </p>
                                                     <div class="row py-3">
                                                         <div class="col">
-                                                            <i class="fas fa-signal large-icon"></i>
+                                                            <i class="fas fa-signal large-icon" data-toggle="popover"
+                                                                data-html="true" data-content="重みつき乱択アルゴリズム<br>を利用しています"
+                                                                data-trigger="hover"></i>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="carousel-item">
                                                     <p class="py-3 h-25">どれを選べばよいかわからないときは<br>NPCもランダムにカードをめくります</p>
                                                     <div class="row py-3">
-                                                        <div class="col-2 offset-4">
+                                                        <div class="col-2 offset-2">
                                                             <div class="card-wrapper card-sample">
-                                                                <div class="card-body">
-                                                                    <div class="card-front suit-club">1</div>
+                                                                <div class="card-body card-close-auto"
+                                                                    data-toggle="popover"
+                                                                    data-content="わからないときはランダムに選びます"
+                                                                    data-trigger="hover" data-html="true">
+                                                                    <div class="card-front suit-diam">2</div>
                                                                     <div class="card-back">CARD</div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="col-2">
                                                             <div class="card-wrapper card-sample">
-                                                                <div class="card-body">
-                                                                    <div class="card-front suit-diam">9</div>
+                                                                <div class="card-body card-close-auto"
+                                                                    data-toggle="popover"
+                                                                    data-content="わからないときはランダムに選びます"
+                                                                    data-trigger="hover" data-html="true">
+                                                                    <div class="card-front suit-club">5</div>
+                                                                    <div class="card-back">CARD</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <div class="card-wrapper card-sample">
+                                                                <div class="card-body card-close-auto"
+                                                                    data-toggle="popover"
+                                                                    data-content="わからないときはランダムに選びます"
+                                                                    data-trigger="hover" data-html="true">
+                                                                    <div class="card-front suit-heart">1</div>
+                                                                    <div class="card-back">CARD</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <div class="card-wrapper card-sample">
+                                                                <div class="card-body card-close-auto"
+                                                                    data-toggle="popover"
+                                                                    data-content="わからないときはランダムに選びます"
+                                                                    data-trigger="hover" data-html="true">
+                                                                    <div class="card-front suit-spade">9</div>
                                                                     <div class="card-back">CARD</div>
                                                                 </div>
                                                             </div>
@@ -345,7 +404,9 @@
                                                     <div class="row py-3">
                                                         <div class="col-2 offset-2">
                                                             <div class="card-wrapper card-sample">
-                                                                <div class="card-body card-open">
+                                                                <div class="card-body card-open" data-toggle="popover"
+                                                                    data-content="ランダムに選んでみたら4でした" data-trigger="hover"
+                                                                    data-html="true">
                                                                     <div class="card-front suit-diam">4</div>
                                                                     <div class="card-back">CARD</div>
                                                                 </div>
@@ -353,7 +414,9 @@
                                                         </div>
                                                         <div class="col-2">
                                                             <div class="card-wrapper card-sample">
-                                                                <div class="card-body card-not-open">
+                                                                <div class="card-body" data-toggle="popover"
+                                                                    data-content="このカードも4なのでこれにします" data-trigger="hover"
+                                                                    data-html="true">
                                                                     <div class="card-front suit-club">4</div>
                                                                     <div class="card-back">CARD</div>
                                                                 </div>
@@ -361,16 +424,20 @@
                                                         </div>
                                                         <div class="col-2">
                                                             <div class="card-wrapper card-sample">
-                                                                <div class="card-body card-not-open">
-                                                                    <div class="card-front suit-club">4</div>
+                                                                <div class="card-body card-close-auto"
+                                                                    data-toggle="popover" data-content="このカードは知りません"
+                                                                    data-trigger="hover" data-html="true">
+                                                                    <div class="card-front suit-spade">1</div>
                                                                     <div class="card-back">CARD</div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="col-2">
                                                             <div class="card-wrapper card-sample">
-                                                                <div class="card-body card-not-open">
-                                                                    <div class="card-front suit-club">4</div>
+                                                                <div class="card-body card-close-auto"
+                                                                    data-toggle="popover" data-content="このカードは7なので違います"
+                                                                    data-trigger="hover" data-html="true">
+                                                                    <div class="card-front suit-heart">7</div>
                                                                     <div class="card-back">CARD</div>
                                                                 </div>
                                                             </div>
