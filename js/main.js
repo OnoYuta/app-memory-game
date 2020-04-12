@@ -57,6 +57,7 @@
             this.rivalStrengthLevel = $('#rival-strength-level');
             this.submitBtn = $('.btn-submit');
             this.modal = $('.modal');
+            this.sampleCards = $('.card-sample>.card-body');
             this.progressBars = {};
             this.numOfCards = {};
         }
@@ -609,6 +610,37 @@
                 return;
             }
         }
+        activateCards(cards) {
+            for (let i = 0; i < cards.length; i++) {
+                let card = $(cards[i]);
+
+                card.click([card], function () {
+
+                    if (card.hasClass('card-open') || card.hasClass('card-not-open')) return;
+
+                    card.addClass('card-open');
+
+                    if (card.hasClass('card-close-auto')) {
+                        setTimeout(function () {
+                            card.removeClass('card-open');
+                        }, 1500);
+                        return;
+                    }
+
+                    if (card.hasClass('card-not-close')) return;
+
+                    if (!$('#hasOpended').length) {
+                        card.attr('id', 'hasOpended');
+                        return;
+                    }
+
+                    setTimeout(function () {
+                        card.removeClass('card-open');
+                        $('#hasOpended').removeClass('card-open').removeAttr('id');
+                    }, 1500);
+                });
+            }
+        }
         /**
          * プレイヤをアクティブにしてゲームを開始する
          */
@@ -845,6 +877,7 @@
         }
 
         display.setCards(board.cards);
+        board.activateCards(display.sampleCards);
 
         $.each(config.playerNameLabelMap, function () {
             display.updateProgressBar(this, 0);

@@ -7033,8 +7033,9 @@ button:disabled {
   line-height: 4.8em;
   border-radius: 4px; }
 
-.card-sample i {
-  font-size: xx-large; }
+.large-icon {
+  text-align: center;
+  font-size: 4em; }
 
 @media screen and (max-width: 720px) {
   .container {
