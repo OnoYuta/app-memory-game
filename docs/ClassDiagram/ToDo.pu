@@ -1,0 +1,21 @@
+@startuml
+class ToDo {
+    id
+    title
+    category_id
+    isDone
+    create()
+    delete()
+    excute()
+    restore()
+    purge()
+    getCategory()
+}
+class Category {
+    id
+    name
+    getTodos()
+}
+ToDo "0..*" -right- "1..*" Category
+
+@enduml

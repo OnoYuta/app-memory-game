@@ -1,0 +1,15 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+actor システム利用者
+actor 管理者
+rectangle ToDo管理アプリ {
+  システム利用者 -- (作成)
+  (作成) .> (カテゴリ選択) : 包含
+  システム利用者 -- (完了状態管理)
+  システム利用者 -- (一覧表示)
+  (一覧表示) .> (検索) : 包含
+  システム利用者 -- (削除)
+  (カテゴリ選択) -- 管理者
+}
+@enduml
